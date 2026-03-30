@@ -61,6 +61,7 @@ class EstateProperty(models.Model):
     # filed of buyer and selling price both on readonly 
     buyer = fields.Char(readonly= True)
     selling_price = fields.Float(readonly= True)
+    has_offer = fields.Boolean(compute="_comupte_has_offer", store = True)
     
     
     
@@ -120,11 +121,18 @@ class EstateProperty(models.Model):
             self.garden_area = 10
             self.garden_orientation = 'north'
     
+    @api.depends("offer_ids.status")
+    def _comupte_has_offer(self):
+        for record in self:
+            record.has_offer = True if any(s == 'new' for s in record.offer_ids.mapped('status')) and record.status == 'new' else False
+    
     # METHODS -buttons in view-
     def set_status_to_sold(self):
         for record in self:
             if record.status == 'cancelled':
-                raise UserError(f"Status is set to: can not set to Sold")
+                raise UserError(r"Status is setted on Cancelled and can't be set to Sold")
+            if not record.offer_ids.filtered(lambda x: x.status == 'accept'):
+                raise UserError("At least one offer must be accepted before setting to Sold")
             else:
                 record.status = 'sold'
         return True

@@ -5,7 +5,12 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties"
+                  decoration-info="has_offer"
+                  decoration-success="status == 'sold'"
+                  decoration-danger="status == 'cancelled'"
+            >
+                <field name="status" decoration-bf="status == 'sold'"/>
                 <field name="name"/>
                 <field name="postcode"/>
                 <!-- <field name="property_type_id"/> -->
@@ -36,7 +41,7 @@
                             <field name="name" placeholder="Estate Property Title"/>
                         </h1>
                         <group>
-                            <field name="property_tag_id" widget="many2many_tags"/>
+                            <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                     </div>
                     
@@ -89,8 +94,13 @@
 
                         <page string="Offers">
                             <field name="offer_ids" context="{'default_property_id': id}">
-                                <list editable="bottom">
-                                    <field name="property_type_id"/>
+                                <list   editable="bottom"
+                                        decoration-muted="status == 'new'"
+                                        decoration-success="status == 'accept'"
+                                        decoration-bf="status == 'accept'"
+                                        decoration-danger="status == 'refuse'"
+                                >
+                                    <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="partner_id"/>
                                     <field name="price"/>
                                     <button name="set_offer_to_accept" type="object" string="Accept" icon="fa-check" invisible="parent.status != 'new'"/>
@@ -103,7 +113,7 @@
                                 <!-- Forzare il controllo sui campi che usciranno nella form a click su creazione inline-->
                                 <form>
                                     <group>
-                                        <field name="property_type_id"/>
+                                        <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="partner_id"/>
                                         <field name="price"/>
                                         <field name="status"/>

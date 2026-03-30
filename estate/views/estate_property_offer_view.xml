@@ -4,7 +4,9 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list   decoration-danger="status == 'refuse'"
+                    decoration-success="status == 'accept'"
+            >
                 <field name="property_id"/>
                 <field name="property_type_id"/>
                 <field name="partner_id"/>
