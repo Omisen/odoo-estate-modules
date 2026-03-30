@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_estate_root" name="Real Estate" sequence="10">
+
+        <menuitem id="menu_advertisments" name="Advertisments">
+            <menuitem id="menu_estate_property_list" action="action_estate_property"/>
+        </menuitem>
+
+        <menuitem id="menu_settings" name="Settings">
+            
+            <!-- sotto menu-->
+            <menuitem id="menu_settings_estate" name="Estate">
+                <menuitem id="menu_estate_property_type_list" action="action_estate_property_type" sequence="1"/>
+                <menuitem id="menu_estate_property_tag_list" action="action_estate_property_tags" sequence="2"/>
+                <menuitem id="menu_estate_property_offer_list" action="action_estate_property_offer" sequence="3"/>
+            </menuitem>
+
+            <menuitem id="menu_settings_odoo" name="General">
+                <menuitem name="Odoo Settings" id="menu_odoo_config_settings" action="base.res_config_setting_act_window" sequence="10"/>
+            </menuitem>
+
+        </menuitem>
+
+    </menuitem>
+</odoo>

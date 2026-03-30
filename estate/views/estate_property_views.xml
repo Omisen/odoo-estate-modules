@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- list -->
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name"/>
+                <field name="postcode"/>
+                <!-- <field name="property_type_id"/> -->
+                <field name="expected_price"/>
+                <field name="date_availability"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- form-->
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <!-- test for the buttons in view -->
+                <header>
+                    <button name="set_status_to_sold" type="object" string="Sold"/>
+                    <button name="set_status_to_cancel" type="object" string="Cancel"/>
+                    <button name="reset_status" type="object" string="Reset Status"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Estate Property Title"/>
+                        </h1>
+                        <group>
+                            <field name="property_tag_id" widget="many2many_tags"/>
+                        </group>
+                    </div>
+                    
+                    <!-- il gruop ha il set dell attr style col a 2 di deafult -->
+                    <group>
+                        <!-- 1 Group-->
+                        <group>
+                            <!-- <field name="property_type_id"/> -->
+                            <field name="postcode"/>
+                            <field name="total_area"/>
+                        </group>
+                        <!-- 2 Group -->
+                        <group>
+                            <field name="buyer" invisible="status != 'sold'"/>
+                            <field name="selling_price" invisible="status != 'sold'"/>
+                            <field name="date_availability" invisible="status == 'sold'"/>
+                            <field name="expected_price" invisible="status == 'sold'"/>
+                            <field name="best_price" invisible="status == 'sold'"/>
+                        </group>
+
+                    </group>
+                    
+                    
+                    <notebook>
+                        <page string="Spaces">
+                            <group>
+
+                                <group>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                </group>
+
+                                <group>
+                                    <field name="garage"/>
+                                    <field name="description" placeholder="More information about the Property..."/>
+                                </group>
+
+                            </group>
+                        </page>
+
+
+                        <page string="Outdoor">
+                            <group>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="garden == False"/>
+                                <field name="garden_orientation" required="garden == True" invisible="garden == False"/>
+                            </group>
+                        </page>
+
+
+                        <page string="Offers">
+                            <field name="offer_ids" context="{'default_property_id': id}">
+                                <list editable="bottom">
+                                    <field name="property_type_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="price"/>
+                                    <button name="set_offer_to_accept" type="object" string="Accept" icon="fa-check" invisible="parent.status != 'new'"/>
+                                    <button name="set_offer_to_refuse" type="object" string="Refuse" icon="fa-times" invisible="parent.status != 'new'"/>
+                                    <field name="status"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
+                                </list>
+
+                                <!-- Forzare il controllo sui campi che usciranno nella form a click su creazione inline-->
+                                <form>
+                                    <group>
+                                        <field name="property_type_id"/>
+                                        <field name="partner_id"/>
+                                        <field name="price"/>
+                                        <field name="status"/>
+                                        <field name="validity"/>
+                                        <field name="date_deadline"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                    </notebook>
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--search-->
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name"/>
+                <field name="postcode"/>
+                <!-- <field name="property_type_id"/>
+                <filter string="Has Type"
+                        name="filter_has_type"
+                        domain="[('property_type_id', '!=', False)]"/>
+                <group expand="0" string="Raggruppa per">
+                    <filter name="group_by_type"
+                            string="Type"
+                            context="{'group_by': 'property_type_id'}"/>
+                </group> -->
+                <filter string="Available" 
+                        name="filter_available"
+                        domain="[('date_availability', '!=', False)]"/>
+                
+                <filter string="Has Garden"
+                        name="filter_has_garden"
+                        domain="[('garden', '=', True)]"/>
+
+                <group expand="0" string="Raggruppa per">
+                    <filter name="group_by_postcode"
+                            string="Postcode"
+                            context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+
+    <!--action -->
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- menu spostato in estate_menus.xml per centralizzazione-->
+</odoo>
