@@ -12,6 +12,7 @@
             >
                 <field name="status" decoration-bf="status == 'sold'"/>
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <!-- <field name="property_type_id"/> -->
                 <field name="expected_price"/>
@@ -41,6 +42,7 @@
                             <field name="name" placeholder="Estate Property Title"/>
                         </h1>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                     </div>

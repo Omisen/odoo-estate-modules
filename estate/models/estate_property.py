@@ -12,6 +12,7 @@ class EstateProperty(models.Model):
     
     
     name = fields.Char(required=True)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_id = fields.Many2many("estate.property.tag", string="Tags")
     description = fields.Text(compute="_compute_offers_presence", store= True) 
     bedrooms = fields.Integer()

@@ -21,9 +21,34 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
-                    <group string="Property Type:">
-                        <field name="name"/>
+                    
+                    
+                    <group col="4" colspan="2">
+                        <group class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </group>
+                        <div class="oe_inline" name="button_box">
+                            <button name="%(action_estate_property_offer)d" type="action" icon="fa-list">
+                                <field name="offer_count" widget="statinfo"/>
+                            </button>
+                        </div>
                     </group>
+
+                    <notebook>
+                        <page string="Properties of this Type">
+                            <field name="property_ids">
+                                <list editable="bottom" create="False" delete="False" edit="False">
+                                    <field name="name"/>
+                                    <field name="postcode"/>
+                                    <field name="expected_price"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                    
                 </sheet>
             </form>
         </field>
