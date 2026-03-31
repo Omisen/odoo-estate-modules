@@ -12,7 +12,7 @@
             <menuitem id="menu_settings_estate" name="Estate">
                 <menuitem id="menu_estate_property_type_list" action="action_estate_property_type" sequence="1"/>
                 <menuitem id="menu_estate_property_tag_list" action="action_estate_property_tags" sequence="2"/>
-                <menuitem id="menu_estate_property_offer_list" action="action_estate_property_offer" sequence="3"/>
+                <menuitem id="menu_estate_property_offer_list" action="action_estate_property_offer_all" sequence="3"/>
             </menuitem>
 
             <menuitem id="menu_settings_odoo" name="General">
