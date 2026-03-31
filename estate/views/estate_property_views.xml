@@ -42,16 +42,15 @@
                             <field name="name" placeholder="Estate Property Title"/>
                         </h1>
                         <group>
-                            <field name="property_type_id"/>
                             <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                     </div>
                     
                     <!-- il gruop ha il set dell attr style col a 2 di deafult -->
-                    <group>
+                    <group string="">
                         <!-- 1 Group-->
                         <group>
-                            <!-- <field name="property_type_id"/> -->
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="total_area"/>
                         </group>
@@ -102,7 +101,6 @@
                                         decoration-bf="status == 'accept'"
                                         decoration-danger="status == 'refuse'"
                                 >
-                                    <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="partner_id"/>
                                     <field name="price"/>
                                     <button name="set_offer_to_accept" type="object" string="Accept" icon="fa-check" invisible="parent.status != 'new'"/>
@@ -111,18 +109,6 @@
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                 </list>
-
-                                <!-- Forzare il controllo sui campi che usciranno nella form a click su creazione inline-->
-                                <form>
-                                    <group>
-                                        <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="partner_id"/>
-                                        <field name="price"/>
-                                        <field name="status"/>
-                                        <field name="validity"/>
-                                        <field name="date_deadline"/>
-                                    </group>
-                                </form>
                             </field>
                         </page>
 

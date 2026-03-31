@@ -78,4 +78,29 @@ class EstatePropertyOffer(models.Model):
             record.property_id.status = 'sold'
         return True
     
+    # METHODS -api model create-
+    @api.model_create_multi
+    def create(self, vals_list):
+        
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            property = self.env['estate.property'].browse(property_id)
+            
+            # se ce il price se no fallback sul secondo argomento = 0
+            offer_price = vals.get('price', 0)
+            
+            best_price = 0
+            if property.offer_ids:
+                best_price = max(offer.price for offer in property.offer_ids)
+            
+            if offer_price < best_price:
+                raise ValidationError(
+                    f"Cannot create offer with price {offer_price:.2f}.\n"
+                    f"Best existing offer is {best_price:.2f}."
+                )
+            
+            property.status = 'offer_recieved'
+        
+        # invia tutt al model pareent
+        return super().create(vals_list)
     

@@ -154,3 +154,30 @@ class EstateProperty(models.Model):
             for offer in record.offer_ids.filtered(lambda x: x.status in ('accept', 'refuse')):
                 offer.status = 'new'
         return True
+
+    # METHODS -business logic and crud methods-
+    
+    # @api.ondelete(at_uninstall=False)
+    # def _unlink_except_sold_or_new(self):
+    #     """Prevent deletion of properties that are not in 'new' or 'cancelled' state"""
+    #     for record in self:
+    #         if record.status not in ['new', 'cancelled']:
+    #             raise UserError(
+    #                 f"Cannot delete property '{record.name}' "
+    #                 f"because it is in '{record.status}' state!"
+    #             )
+    
+    # no -^^^--> perche se mettessimo `ecord.offer_ids.unlink()` sotto il decoratore
+    # cancellerebbe i dati prima di fare il controllo.
+    # Invece con override di unlink(self) permette di fare un controllo prima di effetuare
+    # le operazioni e restitire tutto con return super().unlink()
+    # si -vvv----
+    def unlink(self):
+        for record in self:
+            record.offer_ids.unlink()
+        
+        for record in self:
+            if record.status not in ['new', 'cancelled']:
+                raise UserError(f"Cannot delete property '{record.name}' because it is in '{record.status}' state!")
+        
+        return super().unlink()
