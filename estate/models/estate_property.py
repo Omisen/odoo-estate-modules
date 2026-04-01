@@ -53,6 +53,7 @@ class EstateProperty(models.Model):
     # field related to status that will be changed on button by function
     status = fields.Selection(  selection=[
                                             ('new', 'New'),
+                                            ('offer_recieved', 'Offer Recieved'),
                                             ('sold', 'Sold'),
                                             ('cancelled', 'Cancelled'),
                                             ],
@@ -62,7 +63,6 @@ class EstateProperty(models.Model):
     # filed of buyer and selling price both on readonly 
     buyer = fields.Char(readonly= True)
     selling_price = fields.Float(readonly= True)
-    has_offer = fields.Boolean(compute="_comupte_has_offer", store = True)
     
     
     
@@ -121,11 +121,7 @@ class EstateProperty(models.Model):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
-    
-    @api.depends("offer_ids.status")
-    def _comupte_has_offer(self):
-        for record in self:
-            record.has_offer = True if any(s == 'new' for s in record.offer_ids.mapped('status')) and record.status == 'new' else False
+
     
     # METHODS -buttons in view-
     def set_status_to_sold(self):
@@ -150,7 +146,8 @@ class EstateProperty(models.Model):
     def reset_status(self):
         for record in self:
             if record.status in ('sold', 'cancelled'):
-                record.status = 'new'
+                # record.status = 'offer_recieved'
+                record.with_context(bypass_reset= True).write({'status':'offer_recieved'})
             for offer in record.offer_ids.filtered(lambda x: x.status in ('accept', 'refuse')):
                 offer.status = 'new'
         return True
@@ -181,3 +178,14 @@ class EstateProperty(models.Model):
                 raise UserError(f"Cannot delete property '{record.name}' because it is in '{record.status}' state!")
         
         return super().unlink()
+    
+    # METHOD -blocco delle funzionalita di modifica se status in sold o cnacelled-
+    def write(self, vals):
+        for record in self:
+            # bypass solo per reset_status con flag
+            if self.env.context.get("bypass_reset"):
+                return super().write(vals)
+            
+            if record.status in ['sold', 'cancelled']:
+                raise UserError(f"Cannot modify property '{record.name}' because it is in '{record.status}' state!")
+        return super().write(vals)

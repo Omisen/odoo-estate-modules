@@ -34,6 +34,8 @@ class EstatePropertyOffer(models.Model):
                                 inverse="_inverse_date_deadline",
                                 copy = False,
                                 )
+    property_status = fields.Boolean(compute="_compute_property_status",store=True)
+    
     
     @api.constrains("price")
     def _check_price(self):
@@ -48,6 +50,10 @@ class EstatePropertyOffer(models.Model):
                 raise ValidationError("Validity must be greather then zero and Check that\ndeadline date isn\'t below creation date !!!")
     
     
+    @api.depends("property_id.status")
+    def _compute_property_status(self):
+        for record in self:
+            record.property_status = True if record.property_id.status != 'offer_recieved' else False
     
     @api.depends("validity")
     def _computed_date_deadline(self):

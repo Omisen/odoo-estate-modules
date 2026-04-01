@@ -38,11 +38,18 @@
                     <notebook>
                         <page string="Properties of this Type">
                             <field name="property_ids">
-                                <list editable="bottom" create="False" delete="False" edit="False">
+                                <list editable="bottom"
+                                      create="False" 
+                                      delete="False" 
+                                      edit="False"
+                                      decoration-success="status == 'sold'"
+                                      decoration-info="status == 'offer_recieved'"
+                                      decoration-danger="status == 'cancelled'"
+                                >
                                     <field name="name"/>
                                     <field name="postcode"/>
                                     <field name="expected_price"/>
-                                    <field name="status"/>
+                                    <field name="status" decoration-bf="status in ('sold','cancelled','offer_recieved')"/>
                                 </list>
                             </field>
                         </page>
