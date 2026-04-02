@@ -35,18 +35,18 @@ class EstatePropertyOffer(models.Model):
                                 copy = False,
                                 )
     property_status = fields.Boolean(compute="_compute_property_status",store=True)
-    
+
     
     @api.constrains("price")
     def _check_price(self):
         for record in self:
-            if record.price <=0:
+            if record.price <= 0:
                 raise ValidationError("Price must be greather than zero !!! ")
             
     @api.constrains("validity", "date_deadline")
     def _check_validity(self):
         for record in self:
-            if record.validity < 0 and record.date_deadline.day < record.create_date.day :
+            if record.validity < 0 and record.date_deadline.day < record.create_date.day:
                 raise ValidationError("Validity must be greather then zero and Check that\ndeadline date isn\'t below creation date !!!")
     
     

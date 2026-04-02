@@ -112,6 +112,12 @@
                             </field>
                         </page>
 
+                        <page string="Salesperson">
+                            <group>
+                                <field name="salesperson_id" readonly="status in ('sold', 'cancelled')" string="Sales Person"/>
+                            </group>
+                        </page>
+
                     </notebook>
 
 

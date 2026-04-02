@@ -64,6 +64,9 @@ class EstateProperty(models.Model):
     buyer = fields.Char(readonly= True)
     selling_price = fields.Float(readonly= True)
     
+    # FIELD -tutorial 12 on inheritance model-
+    salesperson_id = fields.Many2one("res.users", string="Salesperson")
+    
     
     
     #METHODS -constraints-
@@ -145,9 +148,12 @@ class EstateProperty(models.Model):
     # only for testing
     def reset_status(self):
         for record in self:
-            if record.status in ('sold', 'cancelled'):
-                # record.status = 'offer_recieved'
-                record.with_context(bypass_reset= True).write({'status':'offer_recieved'})
+            if record.status in ('sold', 'cancelled', 'offer_recieved'):
+                # record.status = 'offer_recieved con il [check sulle offerte] se no record.status = 'new'
+                (record.with_context(bypass_reset= True).write({'status':'offer_recieved'}) if 
+                 record.offer_ids else
+                 record.with_context(bypass_reset= True).write({'status':'new'}))
+                
             for offer in record.offer_ids.filtered(lambda x: x.status in ('accept', 'refuse')):
                 offer.status = 'new'
         return True
