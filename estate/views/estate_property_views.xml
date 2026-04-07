@@ -155,6 +155,15 @@
                         name="filter_has_garden"
                         domain="[('garden', '=', True)]"/>
 
+                <!-- filtri mediante filter_domain -->
+                <field string="Area Equal"
+                        name="living_area"
+                        filter_domain="[('living_area', '=', self)]"/>
+                
+                <field string="Area Greather Than"
+                        name="living_area"
+                        filter_domain="[('living_area', '>=', self)]"/>
+
                 <group expand="0" string="Raggruppa per">
                     <filter name="group_by_postcode"
                             string="Postcode"
