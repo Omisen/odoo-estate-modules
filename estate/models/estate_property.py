@@ -187,11 +187,15 @@ class EstateProperty(models.Model):
     
     # METHOD -blocco delle funzionalita di modifica se status in sold o cnacelled-
     def write(self, vals):
+        # fields that users cannot modify when status is 'sold' or 'cancelled'
+        # internal orm writes (computed fields, status) are allowed to pass through
+        protected = {'name', 'expected_price', 'postcode', 'bedrooms', 
+                 'living_area', 'garage', 'garden', 'garden_area', 
+                 'garden_orientation', 'date_availability'}
         for record in self:
             # bypass solo per reset_status con flag
             if self.env.context.get("bypass_reset"):
                 return super().write(vals)
-            
-            if record.status in ['sold', 'cancelled']:
+            if record.status in ['sold', 'cancelled'] and set(vals) & protected:
                 raise UserError(f"Cannot modify property '{record.name}' because it is in '{record.status}' state!")
         return super().write(vals)
