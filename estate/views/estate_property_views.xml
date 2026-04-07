@@ -114,7 +114,11 @@
 
                         <page string="Salesperson">
                             <group>
-                                <field name="salesperson_id" readonly="status in ('sold', 'cancelled')" string="Sales Person"/>
+                                <field  name="salesperson_id" 
+                                        readonly="status in ('sold', 'cancelled')" 
+                                        string="Sales Person"
+                                        context="{'form_view_ref': 'base.view_users_form'}"
+                                        />
                             </group>
                         </page>
 

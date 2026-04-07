@@ -1,6 +1,7 @@
 from odoo import models,fields,api
 from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
+from odoo.tools.float_utils import float_compare
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -96,6 +97,15 @@ class EstatePropertyOffer(models.Model):
             offer_price = vals.get('price', 0)
             
             best_price = 0
+            
+            
+            # checks on creation of che offers in the propperty.estate that offer price mus t be over the 90% of expected price
+            if property.expected_price and property.selling_price:
+                min_price = property.expected_price * 0.90
+                if float_compare(property.selling_price, min_price, precision_digits=2) < 0:
+                    raise ValidationError(f"Selling Price [{property.selling_price:.2f}] can\'t be lower than 90% of Expected Price [{min_price:.2f}] ")
+                
+            
             if property.offer_ids:
                 best_price = max(offer.price for offer in property.offer_ids)
             
