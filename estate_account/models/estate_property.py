@@ -25,11 +25,18 @@ class EstateProperty(models.Model):
                                                                                         'name': record.name,
                                                                                         'quantity': 1,
                                                                                         'price_unit': record.selling_price * 0.06,
-                                                                                    })],
+                                                                                    }),
+                                                                      Command.create({
+                                                                                        'name': 'Administrative fees',
+                                                                                        'quantity': 1,
+                                                                                        'price_unit': 100.00,
+                                                                                    }),
+                                                                      ],
                                             }
                                             for record in self
                                         ])
         
+        # debug on close of the function
         _logger.warning(">>> estate_account: set_status_to_sold [CLOSED]")
         
         return super().set_status_to_sold()

@@ -23,6 +23,11 @@
         'views/res_users_view.xml',
         'views/estate_menus.xml',
     ],
-    'assets': {},
+    'assets': {
+        'web.assets_backend': [
+            'estate/static/src/css/kanban.css',
+        ],
+        
+    },
     'author': 'Simone',
 }
