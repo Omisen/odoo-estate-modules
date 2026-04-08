@@ -1,17 +1,26 @@
 {
+    # region Identity
     'name': 'Estate',
     'version': '1.0',
     'license': 'LGPL-3',
     'category': '',
     'summary': 'Estate module for training purpouse',
+    'author': 'Simone',
+    # endregion
+
+    # region Dependencies
     'depends': ['base'],
-    
-    'web_app_name': 'Real Estate', 
-    'web_icon': 'estate,static/description/icon.png',
+    # endregion
+
+    # region Application
     'application': True,
-    'sequence' : 1,
     'installable': True,
-    
+    'sequence': 1,
+    'web_app_name': 'Real Estate',
+    'web_icon': 'estate,static/description/icon.png',
+    # endregion
+
+    # region Data
     'data': [
         'security/ir.model.access.csv',
         'data/estate.property.type.csv',
@@ -23,11 +32,13 @@
         'views/res_users_view.xml',
         'views/estate_menus.xml',
     ],
+    # endregion
+
+    # region Assets
     'assets': {
         'web.assets_backend': [
             'estate/static/src/css/kanban.css',
         ],
-        
     },
-    'author': 'Simone',
+    # endregion
 }

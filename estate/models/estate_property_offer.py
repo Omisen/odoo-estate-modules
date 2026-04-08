@@ -1,13 +1,16 @@
+#region Imports
 from odoo import models,fields,api
 from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
 from odoo.tools.float_utils import float_compare
+#endregion
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
     
+    #region -Property Offer Fields-
     property_type_id = fields.Many2one("estate.property.type", string="Type", related="property_id.property_type_id", store=True)
     price = fields.Float()
     status = fields.Selection(  selection= [
@@ -36,8 +39,9 @@ class EstatePropertyOffer(models.Model):
                                 copy = False,
                                 )
     property_status = fields.Boolean(compute="_compute_property_status",store=True)
+    #endregion
 
-    
+    #region METHODS -constraints-
     @api.constrains("price")
     def _check_price(self):
         for record in self:
@@ -49,8 +53,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.validity < 0 and record.date_deadline.day < record.create_date.day:
                 raise ValidationError("Validity must be greather then zero and Check that\ndeadline date isn\'t below creation date !!!")
+    #endregion
     
-    
+    #region METHODS -computed-
     @api.depends("property_id.status")
     def _compute_property_status(self):
         for record in self:
@@ -66,8 +71,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date and record.date_deadline:
                 record.validity = (record.date_deadline - record.create_date.date()).days
+    #endregion
     
-    # METHODS -button view-
+    #region METHODS -button view-
     def set_offer_to_refuse(self):
         for record in self:
             if record.property_id.status in ['sold', 'cancelled']:
@@ -85,7 +91,9 @@ class EstatePropertyOffer(models.Model):
             record.property_id.status = 'sold'
         return True
     
-    # METHODS -api model create-
+    #endregion
+    
+    #region METHODS -api model create-
     @api.model_create_multi
     def create(self, vals_list):
         
@@ -120,3 +128,4 @@ class EstatePropertyOffer(models.Model):
         # invia tutt al model pareent
         return super().create(vals_list)
     
+    #endregion

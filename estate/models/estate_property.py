@@ -1,6 +1,9 @@
+#region Imports
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_compare
+#endregion
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -10,7 +13,7 @@ class EstateProperty(models.Model):
     # ("expected_price_positive", "CHECK(expected_price > 0)", "Expected price must be greater than zero"),
     # ]
     
-    
+    #region -Estate Property Fields-
     name = fields.Char(required=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_id = fields.Many2many("estate.property.tag", string="Tags")
@@ -66,10 +69,10 @@ class EstateProperty(models.Model):
     
     # FIELD -tutorial 12 on inheritance model-
     salesperson_id = fields.Many2one("res.users", string="Salesperson")
+    #endregion
     
     
-    
-    #METHODS -constraints-
+    #region METHODS -constraints-
     
     # garden area deve essere diversa da zero a compilazione dle form 
     @api.constrains("garden_area", "garden")
@@ -100,9 +103,9 @@ class EstateProperty(models.Model):
                 min_allowed = record.expected_price * 0.90
                 if float_compare(record.selling_price, min_allowed, precision_digits=2) < 0:
                     raise ValidationError(f"Selling Price [{record.selling_price:.2f}] can\'t be lower than 90% of Expected Price [{min_allowed:.2f}] ")
+    #endregion
     
-    
-    # METHODS -computed-
+    #region METHODS -computed-
     @api.depends("living_area", "garden_area")
     def _computed_total_areas(self):
         for record in self:
@@ -124,9 +127,9 @@ class EstateProperty(models.Model):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
-
+    #endregion
     
-    # METHODS -buttons in view-
+    #region METHODS -buttons in view-
     def set_status_to_sold(self):
         for record in self:
             if record.status == 'cancelled':
@@ -157,8 +160,9 @@ class EstateProperty(models.Model):
             for offer in record.offer_ids.filtered(lambda x: x.status in ('accept', 'refuse')):
                 offer.status = 'new'
         return True
-
-    # METHODS -business logic and crud methods-
+    #endregion
+    
+    #region METHODS -business logic and crud methods-
     
     # @api.ondelete(at_uninstall=False)
     # def _unlink_except_sold_or_new(self):
@@ -199,3 +203,4 @@ class EstateProperty(models.Model):
             if record.status in ['sold', 'cancelled'] and set(vals) & protected:
                 raise UserError(f"Cannot modify property '{record.name}' because it is in '{record.status}' state!")
         return super().write(vals)
+    #endregion
