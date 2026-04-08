@@ -143,26 +143,30 @@
                 
                 <templates>
                     <t t-name="card">
-                        <field name="status" widget="badge"
-                            decoration-info="status == 'new'"
-                            decoration-warning="status == 'offer_recieved'"
-                            decoration-success="status == 'sold'"
-                            decoration-danger="status == 'cancelled'"
-                        />
-                        <field name="name" class="fw-bold fs-2"/>
-                        <br/>
-                        <group>
-                            Expected Price: <field name="expected_price"/>
-                            <div t-if="record.offer_ids.raw_value.length and record.status.raw_value == 'offer_recieved'">
-                                Best Price: <field name="best_price"/>
+                        <div class="mb-3 p-2">
+                            <field name="status" widget="badge"
+                                decoration-info="status == 'new'"
+                                decoration-warning="status == 'offer_recieved'"
+                                decoration-success="status == 'sold'"
+                                decoration-danger="status == 'cancelled'"
+                            />
+                            <div class="mt-2">
+                                <field name="name" class="fw-bold fs-2"/>
                             </div>
-                            <div t-if="record.status.raw_value == 'sold'">
-                                Selling Price: <field name="selling_price"/>
+                            <br/>
+                            <div class="my-2">
+                                <strong>Expected Price:</strong> <field name="expected_price"/>
+                                <div t-if="record.offer_ids.raw_value.length and record.status.raw_value == 'offer_recieved'">
+                                    <strong>Best Price:</strong> <field name="best_price"/>
+                                </div>
+                                <div t-if="record.status.raw_value == 'sold'">
+                                    <strong>Selling Price:</strong> <field name="selling_price"/>
+                                </div>
                             </div>
-                        </group>
-                        <footer>
-                            <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                        </footer>
+                            <footer >
+                                <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </footer>
+                        </div>
                     </t>
                 </templates>
             </kanban>

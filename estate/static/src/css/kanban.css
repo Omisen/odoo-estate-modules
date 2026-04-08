@@ -1,4 +1,9 @@
 .o_kanban_group .o_column_title {
     font-size: 1.5rem !important;
     font-weight: 700 !important;
+    gap: 15px; 
+}
+
+.o_kanban_record {
+    margin-bottom: 12px !important;
 }
