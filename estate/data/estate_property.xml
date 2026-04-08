@@ -1,0 +1,31 @@
+<odoo>
+    <data noupdate="1">
+        
+        <record id="estate_property_bigvilla" model="estate.property">
+            <field name="name">Big Villa</field>
+            <field name="status">new</field>
+            <field name="postcode">12345</field>
+            <field name="date_availability" eval="(datetime.now()-relativedelta(days=21)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="expected_price">1600000</field>
+            <field name="bedrooms">6</field>
+            <field name="living_area">100</field>
+            <field name="garage" eval="True"/>
+            <field name="garden" eval="True"/>
+            <field name="garden_area">100000</field>
+            <field name="garden_orientation">south</field>
+        </record>
+        
+        
+        <record id="estate_property_trailerhome" model="estate.property">
+            <field name="name">Trailer Home</field>
+            <field name="status">cancelled</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability" eval="(datetime.now()-relativedelta(days=21)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="expected_price">100000</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="garage" eval="False"/>
+        </record>
+        
+    </data>
+</odoo>
