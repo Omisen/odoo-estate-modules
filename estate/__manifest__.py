@@ -26,6 +26,7 @@
         'data/estate.property.type.csv',
         'data/estate.property.tag.csv',
         'data/estate_property.xml',
+        'demo/estate.property.offer.xml',
         'views/estate_property_offer_view.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_type_views.xml',
