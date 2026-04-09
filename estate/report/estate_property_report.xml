@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!--#region Report PDF Template -->
     <template id="report_property_estate_template">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
@@ -150,10 +149,16 @@
             </t>
         </t>
     </template>
-    <!--#endregion -->
 
 
-    <!--#region Report PDF Action -->
+    <record id="action_report_estate_property_html" model="ir.actions.report">
+        <field name="name">Property Report Preview</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">estate.report_property_estate_template</field>
+    </record>
+
+
     <record id="action_report_estate_property" model="ir.actions.report">
         <field name="name">Property Report PDF</field>
         <field name="model">estate.property</field>
@@ -163,5 +168,5 @@
         <field name="binding_model_id" ref="model_estate_property"/>
         <field name="binding_type">report</field>
     </record>
-    <!--#endregion -->
+
 </odoo>

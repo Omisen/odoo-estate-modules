@@ -11,10 +11,7 @@
     'sequence': 2,
     'installable': True,
     
-    'data':[
-            'securty/ir.model.access.csv',
-            
-            ],
+    'data':[],
     'assets': {},
     'author': 'Simone',
 }

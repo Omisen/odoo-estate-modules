@@ -1,13 +1,10 @@
-#region Imports
-from odoo import models,fields
-#endregion
+from odoo import models, fields
 
-class EstatePropertyTags(models.Model):
+
+class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
-    _description = "Estate Property Tags"
+    _description = "Estate Property Tag"
     _order = "name"
-    
-    #region -Property Tag Fields-
+
     name = fields.Char(required=True)
     color = fields.Integer()
-    #endregion
