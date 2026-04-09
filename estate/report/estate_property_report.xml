@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--#region Report PDF Template -->
+    <template id="report_property_estate_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <!-- SECTION -header- -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h2 class="mt0">
+                                    <span t-field="doc.name"/>
+                                    <small class="text-muted ms-2">
+                                        [<span t-field="doc.postcode"/>]
+                                    </small>
+                                </h2>
+                                <span class="badge rounded-pill bg-primary"
+                                      t-field="doc.status"/>
+                            </div>
+                        </div>
+
+                        <!-- SECTION -general info- -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h4 class="border-bottom pb-1">General Information</h4>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <th class="w-50"><strong>Property Type:</strong></th>
+                                            <td><span t-field="doc.property_type_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th><strong>Tags:</strong></th>
+                                            <td><span t-field="doc.property_tag_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th><strong>Salesperson:</strong></th>
+                                            <td><span t-field="doc.salesperson_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th><strong>Availability Date:</strong></th>
+                                            <td><span t-field="doc.date_availability"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="w-50"><strong>Expected Price:</strong></th>
+                                            <td><span t-field="doc.expected_price"
+                                                      t-options='{"widget": "monetary", "display_currency": doc.env.company.currency_id}'/></td>
+                                        </tr>
+                                        <tr>
+                                            <th><strong>Best Offer:</strong></th>
+                                            <td><span t-field="doc.best_price"
+                                                      t-options='{"widget": "monetary", "display_currency": doc.env.company.currency_id}'/></td>
+                                        </tr>
+                                        <tr t-if="doc.selling_price">
+                                            <th><strong>Selling Price:</strong></th>
+                                            <td><span t-field="doc.selling_price"
+                                                      t-options='{"widget": "monetary", "display_currency": doc.env.company.currency_id}'/></td>
+                                        </tr>
+                                        <tr t-if="doc.buyer">
+                                            <th><strong>Buyer:</strong></th>
+                                            <td><span t-field="doc.buyer"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- SECTION -characteristics- -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h4 class="border-bottom pb-1">Property Features</h4>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <th class="w-50"><strong>Bedrooms:</strong></th>
+                                            <td><span t-field="doc.bedrooms"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th><strong>Living Area:</strong></th>
+                                            <td><span t-field="doc.living_area"/> sqm</td>
+                                        </tr>
+                                        <tr>
+                                            <th><strong>Total Area:</strong></th>
+                                            <td><span t-field="doc.total_area"/> sqm</td>
+                                        </tr>
+                                        <tr>
+                                            <th><strong>Garage:</strong></th>
+                                            <td><span t-field="doc.garage"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="w-50"><strong>Garden:</strong></th>
+                                            <td><span t-field="doc.garden"/></td>
+                                        </tr>
+                                        <tr t-if="doc.garden">
+                                            <th><strong>Garden Area:</strong></th>
+                                            <td><span t-field="doc.garden_area"/> sqm</td>
+                                        </tr>
+                                        <tr t-if="doc.garden">
+                                            <th><strong>Garden Orientation:</strong></th>
+                                            <td><span t-field="doc.garden_orientation"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- SECTION -offers- -->
+                        <t t-if="doc.offer_ids">
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <h4 class="border-bottom pb-1">Offers</h4>
+                                </div>
+                            </div>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Partner</th>
+                                        <th>Price</th>
+                                        <th>Validity (days)</th>
+                                        <th>Deadline</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.offer_ids" t-as="offer">
+                                        <td><span t-field="offer.partner_id"/></td>
+                                        <td><span t-field="offer.price"
+                                                  t-options='{"widget": "monetary", "display_currency": doc.env.company.currency_id}'/></td>
+                                        <td><span t-field="offer.validity"/></td>
+                                        <td><span t-field="offer.date_deadline"/></td>
+                                        <td><span t-field="offer.status"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <!--#endregion -->
+
+
+    <!--#region Report PDF Action -->
+    <record id="action_report_estate_property" model="ir.actions.report">
+        <field name="name">Property Report PDF</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_estate_template</field>
+        <field name="report_file">estate/report/estate_property_report</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+    <!--#endregion -->
+</odoo>
