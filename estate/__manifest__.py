@@ -8,7 +8,7 @@
     'author': 'Simone',
 
     # ------ Dependencies ------
-    'depends': ['base'],
+    'depends': ['base','web'],
 
     # ----- Application ------
     'application': True,
@@ -26,6 +26,7 @@
         'data/estate_property.xml',
         'demo/estate.property.offer.xml',
         'report/estate_property_report.xml',
+        'views/estate_hello_action.xml',
         'views/estate_property_offer_view.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_type_views.xml',
@@ -38,6 +39,10 @@
     'assets': {
         'web.assets_backend': [
             'estate/static/src/css/kanban.css',
+            'estate/static/src/js/hello.js',
+            'estate/static/src/js/widget.js',
+            'estate/static/src/xml/hello.xml',
+            'estate/static/src/xml/widget.xml',
         ],
     },
 

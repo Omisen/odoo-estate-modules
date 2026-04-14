@@ -100,6 +100,8 @@
                                 <field name="salesperson_id"
                                        readonly="status in ('sold', 'cancelled')"
                                        context="{'form_view_ref': 'base.view_users_form'}"/>
+                                <!-- widget uploaded -->
+                                 <field name="name" postcode="postcode" widget="estate_hello_widget" string="Widget"/>
                             </group>
                         </page>
                     </notebook>

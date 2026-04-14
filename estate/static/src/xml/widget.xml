@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="estate.Widget">
+        <div class="border rounded p-3 bg-light">
+            <div class="fw-bold mb-2">Componente OWL dentro una form Odoo</div>
+            <div class="mb-1">
+                <span class="text-muted">Campo agganciato: </span>
+                <span t-esc="props.name"/>
+            </div>
+            <div class="mb-1">
+                <span class="text-muted">Attributo secondario: </span>
+                <span t-esc="postcodeValue"/>
+            </div>
+            <div class="mb-0">
+                <span class="text-muted">Valore corrente: </span>
+                <span t-esc="fieldValue"/>
+            </div>
+            <div class="text-muted small mt-2">
+                Questo widget viene renderizzato dentro una view XML di estate.property
+            </div>
+        </div>
+    </t>
+</templates>
