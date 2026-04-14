@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="estate.OfferCountBadgeField">
+        <div class="o_estate_offer_count_badge_wrapper">
+            <div class="o_estate_offer_count_badge badge border">
+                <span class="o_estate_offer_count_badge_label" t-esc="label"/>
+                <span class="o_estate_offer_count_badge_count badge" t-esc="count"/>
+            </div>
+        </div>
+    </t>
+</templates>

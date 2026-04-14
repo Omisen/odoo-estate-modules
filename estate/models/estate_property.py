@@ -52,6 +52,7 @@ class EstateProperty(models.Model):
     buyer = fields.Char(readonly=True)
     selling_price = fields.Float(readonly=True)
     salesperson_id = fields.Many2one("res.users", string="Salesperson")
+    offer_count = fields.Integer(string="Offer Count", compute="_compute_offer_count", store=True, readonly=True)
 
     # ----- Constraints -----
     @api.constrains("garden_area", "garden")
@@ -88,6 +89,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
+
     @api.depends("offer_ids.partner_id.name")
     def _compute_offers_presence(self):
         for record in self:
@@ -100,6 +102,11 @@ class EstateProperty(models.Model):
             self.garden_area = 10
             self.garden_orientation = "north"
 
+    @api.depends("offer_ids")
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
+            
     # ----- Button actions -----
     def set_status_to_sold(self):
         for record in self:

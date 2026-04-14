@@ -32,7 +32,9 @@
                     <button name="reset_status" type="object" string="Reset Status"/>
                     <button name="%(action_report_estate_property_html)d" type="action" string="Preview Report" class="oe_highlight"/>
                     <!-- <button name="%(action_report_estate_property)d" type="action" string="Print Report" class="oe_highlight"/> -->
-                    <field name="status" widget="statusbar" statusbar_visible="new,offer_recieved,sold"/>
+                    <field name="offer_count" widget="estate_offer_count_badge" nolabel="1"/>
+                    <!-- widget status badge -->
+                    <field name="status" widget="estate_status_badge" nolabel="1"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -100,8 +102,6 @@
                                 <field name="salesperson_id"
                                        readonly="status in ('sold', 'cancelled')"
                                        context="{'form_view_ref': 'base.view_users_form'}"/>
-                                <!-- widget uploaded -->
-                                 <field name="name" postcode="postcode" widget="estate_hello_widget" string="Widget"/>
                             </group>
                         </page>
                     </notebook>

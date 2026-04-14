@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="estate.Dashboard">
+        <div class="o_action o_estate_dashboard p-4">
+            <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-2">
+                <div>
+                    <h1 class="h3 mb-1">Estate Dashboard</h1>
+                    <p class="text-muted mb-0">Overview of properties, offer flow and price evolution.</p>
+                </div>
+            </div>
+
+            <t t-if="state.loading">
+                <div class="alert alert-info mb-0">Loading dashboard data...</div>
+            </t>
+
+            <t t-elif="state.error">
+                <div class="alert alert-danger mb-0" t-esc="state.error"/>
+            </t>
+
+            <t t-else="">
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <button class="card o_estate_dashboard_card w-100 text-start" t-on-click="openNewProperties">
+                            <div class="card-body">
+                                <div class="o_estate_dashboard_label">New Properties</div>
+                                <div class="o_estate_dashboard_value" t-esc="state.propertyNewCount"/>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <button class="card o_estate_dashboard_card w-100 text-start" t-on-click="openOfferReceivedProperties">
+                            <div class="card-body">
+                                <div class="o_estate_dashboard_label">Offer Received</div>
+                                <div class="o_estate_dashboard_value" t-esc="state.propertyOfferReceivedCount"/>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <button class="card o_estate_dashboard_card w-100 text-start" t-on-click="openSoldProperties">
+                            <div class="card-body">
+                                <div class="o_estate_dashboard_label">Sold</div>
+                                <div class="o_estate_dashboard_value" t-esc="state.propertySoldCount"/>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <button class="card o_estate_dashboard_card w-100 text-start" t-on-click="openPendingOffers">
+                            <div class="card-body">
+                                <div class="o_estate_dashboard_label">Pending Offers</div>
+                                <div class="o_estate_dashboard_value" t-esc="state.pendingOfferCount"/>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12 col-xl-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="o_estate_dashboard_label mb-2">Average Selling Price</div>
+                                <div class="o_estate_dashboard_value o_estate_dashboard_value--money" t-esc="formattedAverageSellingPrice"/>
+                                <div class="text-muted small mt-2">Calculated on properties in sold status with a selling price set.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-8">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                                    <div>
+                                        <div class="o_estate_dashboard_label">Offer Price Trend</div>
+                                        <div class="text-muted small">Average offer price by month</div>
+                                    </div>
+                                </div>
+
+                                <t t-if="hasChartData">
+                                    <svg class="o_estate_dashboard_chart" viewBox="0 0 680 240" role="img" aria-label="Offer price trend chart">
+                                        <line x1="42" y1="212" x2="638" y2="212" class="o_estate_dashboard_axis"/>
+                                        <line x1="42" y1="28" x2="42" y2="212" class="o_estate_dashboard_axis"/>
+                                        <t t-foreach="state.yAxisGuides" t-as="guide" t-key="guide.value + '-' + guide.y">
+                                            <line x1="42" t-att-y1="guide.y" x2="638" t-att-y2="guide.y" class="o_estate_dashboard_grid"/>
+                                            <text x="10" t-att-y="guide.y + 4" class="o_estate_dashboard_tick" t-esc="guide.value"/>
+                                        </t>
+                                        <polyline t-att-points="state.svgPoints" class="o_estate_dashboard_polyline"/>
+                                        <t t-foreach="chartCircles" t-as="point" t-key="point.key">
+                                            <circle t-att-cx="point.x" t-att-cy="point.y" r="4" class="o_estate_dashboard_dot"/>
+                                            <text t-att-x="point.x" y="232" text-anchor="middle" class="o_estate_dashboard_tick" t-esc="point.label"/>
+                                        </t>
+                                    </svg>
+                                </t>
+                                <t t-else="">
+                                    <div class="text-muted">No offer data available yet to draw the chart.</div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

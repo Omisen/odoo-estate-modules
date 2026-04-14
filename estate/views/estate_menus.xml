@@ -9,7 +9,7 @@
             <menuitem id="menu_estate_property_list" action="action_estate_property"/>
 
             <!-- component created with owl -->
-            <menuitem id="menu_estate_hello" action="action_estate_hello" sequence="99"/>
+            <menuitem id="menu_estate_hello" action="action_estate_dashboard" sequence="99"/>
         </menuitem>
 
         <!-- Settings -->

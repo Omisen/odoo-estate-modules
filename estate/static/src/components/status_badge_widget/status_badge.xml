@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="estate.StatusBadgeField">
+        <div class="o_estate_status_badge_wrapper">
+            <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold o_estate_status_badge"
+                  t-att-class="badgeClass"
+                  t-esc="label"/>
+        </div>
+    </t>
+</templates>

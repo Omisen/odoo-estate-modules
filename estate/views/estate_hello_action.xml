@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
-    <record id="action_estate_hello" model="ir.actions.client">
-        <field name="name">Hello OWL</field>
-        <field name="tag">estate.hello_action</field>
-    </record>
-
-</odoo>

@@ -1,0 +1,62 @@
+.o_estate_dashboard_card {
+    border: 1px solid rgba(33, 37, 41, 0.08);
+    background: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.o_estate_dashboard_card:hover {
+    border-color: rgba(113, 75, 103, 0.28);
+    box-shadow: 0 0.5rem 1.25rem rgba(33, 37, 41, 0.08);
+    transform: translateY(-1px);
+}
+
+.o_estate_dashboard_label {
+    color: #6c757d;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.o_estate_dashboard_value {
+    color: #212529;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-top: 0.5rem;
+}
+
+.o_estate_dashboard_value--money {
+    font-size: 2.2rem;
+}
+
+.o_estate_dashboard_chart {
+    width: 100%;
+    height: 240px;
+}
+
+.o_estate_dashboard_axis {
+    stroke: #adb5bd;
+    stroke-width: 1;
+}
+
+.o_estate_dashboard_grid {
+    stroke: #dee2e6;
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+}
+
+.o_estate_dashboard_tick {
+    fill: #6c757d;
+    font-size: 11px;
+}
+
+.o_estate_dashboard_polyline {
+    fill: none;
+    stroke: #714b67;
+    stroke-width: 3;
+}
+
+.o_estate_dashboard_dot {
+    fill: #714b67;
+}
