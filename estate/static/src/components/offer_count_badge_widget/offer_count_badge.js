@@ -6,10 +6,12 @@ export class OfferCountBadgeField extends Component {
     static template = "estate.OfferCountBadgeField";
     static props = { ...standardFieldProps };
 
+    // recupera valore inserimento nell attr della view di estate property con fallback su zero
     get count() {
         return this.props.record.data[this.props.name] || 0;
     }
 
+    // fa check per il campio della labeel se count  > 1
     get label() {
         return this.count === 1 ? "Offer" : "Offers";
     }
