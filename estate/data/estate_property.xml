@@ -14,6 +14,10 @@
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
             <field name="property_tag_id" eval="[Command.set([ref('estate.estate_property_tag_new_construction'), ref('estate_property_tag_luxury'), ref('estate_property_tag_sea_view')])]"/>
+            <field name="offer_ids" eval="[
+                Command.create({'partner_id': ref('base.res_partner_12'), 'price': 1450000, 'validity': 7}),
+                Command.create({'partner_id': ref('base.res_partner_10'), 'price': 1525000, 'validity': 10}),
+            ]"/>
             <field name="property_type_id" ref="estate.estate_property_type_villa"/>
         </record>
         

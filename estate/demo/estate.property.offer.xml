@@ -4,7 +4,7 @@
         <record id="estate_property_offer_bigvilla_1" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"/>
             <field name="property_id" ref="estate.estate_property_bigvilla"/>
-            <field name="price">10000</field>
+            <field name="price">1530000</field>
             <field name="validity">14</field>
         </record>
 
@@ -12,14 +12,14 @@
         <record id="estate_property_offer_bigvilla_2" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"/>
             <field name="property_id" ref="estate.estate_property_bigvilla"/>
-            <field name="price">1500000</field>
+            <field name="price">1550000</field>
             <field name="validity">14</field>
         </record>
 
         <record id="estate_property_offer_bigvilla_3" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_1"/>
             <field name="property_id" ref="estate.estate_property_bigvilla"/>
-            <field name="price">1500001</field>
+            <field name="price">1570000</field>
             <field name="validity">14</field>
         </record>
 
