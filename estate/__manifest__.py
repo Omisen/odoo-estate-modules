@@ -8,7 +8,7 @@
     'author': 'Simone',
 
     # ------ Dependencies ------
-    'depends': ['base','web'],
+    'depends': ['base', 'web'],
 
     # ----- Application ------
     'application': True,

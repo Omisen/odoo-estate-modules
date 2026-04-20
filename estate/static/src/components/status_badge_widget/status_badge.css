@@ -23,6 +23,11 @@
     color: #fff;
 }
 
+.o_estate_status_badge.o_estate_status_badge--offer-accepted {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
 .o_estate_status_badge.o_estate_status_badge--sold {
     background-color: #198754;
     color: #fff;

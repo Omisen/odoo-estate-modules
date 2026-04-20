@@ -9,6 +9,7 @@
             <list string="Properties">
                 <field name="status" widget="badge"
                        decoration-info="status == 'offer_recieved'"
+                       decoration-warning="status == 'offer_accepted'"
                        decoration-success="status == 'sold'"
                        decoration-danger="status == 'cancelled'"/>
                 <field name="name"/>
@@ -31,17 +32,18 @@
                             type="object"
                             string="Mark as Sold"
                             class="oe_highlight"
-                            invisible="status != 'offer_recieved'"/>
+                            confirm="This will create the customer invoice and mark the property as sold. Continue?"
+                            invisible="status != 'offer_accepted'"/>
                     <button name="set_status_to_cancel"
                             type="object"
                             string="Cancel"
                             confirm="Are you sure you want to cancel this property?"
                             invisible="status in ('sold', 'cancelled')"/>
-                    <!--[reset button] to Keep only while testing  -->
-                    <button name="reset_status"
+                    <button name="reopen_offers"
                             type="object"
-                            string="Reset"
-                            invisible="status == 'new'"/>
+                            string="Reopen Offers"
+                            confirm="This will reopen the negotiation and let you choose a different offer. Continue?"
+                            invisible="status not in ('offer_accepted', 'cancelled') or offer_count == 0"/>
                     <button name="%(action_report_estate_property_html)d"
                             type="action"
                             class="oe_highlight"
@@ -62,15 +64,15 @@
                         <h1>
                             <field name="name"
                                    placeholder="Example: Modern apartment with terrace"
-                                   readonly="status == 'sold' or status == 'cancelled'"/>
+                                   readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
                         </h1>
                         <group>
                             <field name="property_tag_id"
                                    widget="many2many_tags"
                                    options="{'color_field': 'color','no_create': True, 'no_open': True}"
-                                   readonly="status == 'sold' or status == 'cancelled'"/>
+                                   readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
                             <field name="salesperson_id"
-                                   readonly="status in ('sold', 'cancelled')"
+                                   readonly="status in ('offer_accepted', 'sold', 'cancelled')"
                                    domain="[('share', '=', False)]"
                                    options="{'no_create': True, 'no_create_edit': True}"
                                    context="{'form_view_ref': 'base.view_users_form'}"/>
@@ -79,23 +81,23 @@
                     <group string="Property Details">
                         <group>
                             <field name="property_type_id"
-                                   readonly="status == 'sold' or status == 'cancelled'"
+                                   readonly="status in ('offer_accepted', 'sold', 'cancelled')"
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode"
                                    placeholder="ZIP / Postcode"
-                                   readonly="status == 'sold' or status == 'cancelled'"/>
+                                   readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
                             <field name="date_availability"
                                    invisible="status == 'sold'"
-                                   readonly="status == 'cancelled'"/>
+                                   readonly="status in ('offer_accepted', 'cancelled')"/>
                             <field name="total_area" readonly="1"/>
                         </group>
                         <group string="Pricing">
                             <field name="expected_price"
                                    invisible="status == 'sold'"
-                                   readonly="status == 'cancelled'"/>
+                                   readonly="status in ('offer_accepted', 'cancelled')"/>
                             <field name="best_price" invisible="status == 'sold'" readonly="1"/>
-                            <field name="selling_price" invisible="status != 'sold'" readonly="1"/>
-                            <field name="buyer" invisible="status != 'sold'" readonly="1"/>
+                            <field name="selling_price" invisible="status not in ('offer_accepted', 'sold')" readonly="1"/>
+                            <field name="buyer" invisible="status not in ('offer_accepted', 'sold')" readonly="1"/>
                         </group>
                     </group>
 
@@ -103,9 +105,9 @@
                         <page string="Indoor">
                             <group>
                                 <group>
-                                    <field name="bedrooms" readonly="status == 'sold' or status == 'cancelled'"/>
-                                    <field name="living_area" readonly="status == 'sold' or status == 'cancelled'"/>
-                                    <field name="garage" readonly="status == 'sold' or status == 'cancelled'"/>
+                                    <field name="bedrooms" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
+                                    <field name="living_area" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
+                                    <field name="garage" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
                                 </group>
                                 <group>
                                     <field name="description" readonly="1"/>
@@ -114,18 +116,18 @@
                         </page>
                         <page string="Outdoor">
                             <group>
-                                <field name="garden" readonly="status == 'sold' or status == 'cancelled'"/>
-                                <field name="garden_area" invisible="garden == False" readonly="status == 'sold' or status == 'cancelled'"/>
-                                <field name="garden_orientation" required="garden == True" invisible="garden == False" readonly="status == 'sold' or status == 'cancelled'"/>
+                                <field name="garden" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
+                                <field name="garden_area" invisible="garden == False" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
+                                <field name="garden_orientation" required="garden == True" invisible="garden == False" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" context="{'default_property_id': id}" readonly="status in ('sold', 'cancelled')">
+                            <field name="offer_ids" context="{'default_property_id': id}" readonly="status in ('offer_accepted', 'sold', 'cancelled')">
                                 <list editable="bottom"
                                       decoration-muted="status == 'new'"
-                                      decoration-success="status == 'accept'"
-                                      decoration-bf="status == 'accept'"
-                                      decoration-danger="status == 'refuse'">
+                                      decoration-success="status in ('accept','sold')"
+                                      decoration-bf="status in ('accept','sold')"
+                                      decoration-danger="status in ('refuse','cancelled')">
                                     <field name="partner_id"/>
                                     <field name="price"/>
                                     <field name="status"/>
@@ -155,7 +157,7 @@
                         <div class="mb-3 p-2">
                             <field name="status" widget="badge"
                                 decoration-info="status == 'new'"
-                                decoration-warning="status == 'offer_recieved'"
+                                decoration-warning="status in ('offer_recieved', 'offer_accepted')"
                                 decoration-success="status == 'sold'"
                                 decoration-danger="status == 'cancelled'"
                             />
@@ -165,10 +167,10 @@
                             <br/>
                             <div class="my-2">
                                 <strong>Expected Price:</strong> <field name="expected_price"/>
-                                <div t-if="record.offer_ids.raw_value.length and record.status.raw_value == 'offer_recieved'">
+                                <div t-if="record.offer_ids.raw_value.length and ['offer_recieved', 'offer_accepted'].includes(record.status.raw_value)">
                                     <strong>Best Price:</strong> <field name="best_price"/>
                                 </div>
-                                <div t-if="record.status.raw_value == 'sold'">
+                                <div t-if="['offer_accepted', 'sold'].includes(record.status.raw_value)">
                                     <strong>Selling Price:</strong> <field name="selling_price"/>
                                 </div>
                             </div>
@@ -202,6 +204,9 @@
                 <filter string="Has Garden"
                         name="filter_has_garden"
                         domain="[('garden', '=', True)]"/>
+                <filter string="Offer Accepted"
+                        name="filter_offer_accepted"
+                        domain="[('status', '=', 'offer_accepted')]"/>
                 <filter string="Sold"
                         name="filter_sold"
                         domain="[('status', '=', 'sold')]"/>

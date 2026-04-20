@@ -39,11 +39,12 @@
                                       edit="False"
                                       decoration-success="status == 'sold'"
                                       decoration-info="status == 'offer_recieved'"
+                                      decoration-warning="status == 'offer_accepted'"
                                       decoration-danger="status == 'cancelled'">
                                     <field name="name"/>
                                     <field name="postcode"/>
                                     <field name="expected_price"/>
-                                    <field name="status" decoration-bf="status in ('sold', 'cancelled', 'offer_recieved')"/>
+                                    <field name="status" decoration-bf="status in ('sold', 'cancelled', 'offer_recieved', 'offer_accepted')"/>
                                 </list>
                             </field>
                         </page>

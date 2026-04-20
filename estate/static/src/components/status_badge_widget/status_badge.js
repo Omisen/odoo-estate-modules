@@ -33,6 +33,7 @@ export class EstateStatusBadgeField extends Component {
         return {
             new: "o_estate_status_badge--new",
             offer_recieved: "o_estate_status_badge--offer-recieved",
+            offer_accepted: "o_estate_status_badge--offer-accepted",
             sold: "o_estate_status_badge--sold",
             cancelled: "o_estate_status_badge--cancelled",
         }[this.value] || "o_estate_status_badge--new";

@@ -1,13 +1,20 @@
 from odoo import models, Command
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def set_status_to_sold(self):
-        self.env["account.move"].create([
-            {
-                "partner_id": record.offer_ids.filtered(lambda o: o.status == "accept").partner_id.id,
+        result = super().set_status_to_sold()
+
+        for record in self:
+            sold_offer = record.offer_ids.filtered(lambda offer: offer.status == "sold")[:1]
+            if not sold_offer:
+                raise UserError("No accepted offer was found for invoicing this property.")
+
+            self.env["account.move"].create({
+                "partner_id": sold_offer.partner_id.id,
                 "move_type": "out_invoice",
                 "invoice_line_ids": [
                     Command.create({
@@ -21,10 +28,8 @@ class EstateProperty(models.Model):
                         "price_unit": 100.00,
                     }),
                 ],
-            }
-            for record in self
-        ])
+            })
 
-        return super().set_status_to_sold()
+        return result
 
     

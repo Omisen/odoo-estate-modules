@@ -8,5 +8,5 @@ class ResUsers(models.Model):
         "estate.property",
         "salesperson_id",
         string="Properties",
-        domain="[('status', 'in', ['new', 'offer_recieved', 'sold'])]",
+        domain="[('status', 'in', ['new', 'offer_recieved', 'offer_accepted', 'sold'])]",
     )

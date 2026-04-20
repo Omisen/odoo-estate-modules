@@ -43,6 +43,7 @@ class EstateProperty(models.Model):
         selection=[
             ("new", "New"),
             ("offer_recieved", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -110,15 +111,25 @@ class EstateProperty(models.Model):
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
-            
+
     # ----- Button actions -----
     def set_status_to_sold(self):
         for record in self:
             if record.status == "cancelled":
                 raise UserError("Cannot set a cancelled property to Sold.")
-            if not record.offer_ids.filtered(lambda x: x.status == "accept"):
-                raise UserError("At least one offer must be accepted before setting to Sold.")
-            record.status = "sold"
+            if record.status == "sold":
+                raise UserError("This property is already sold.")
+
+            accepted_offer = record.offer_ids.filtered(lambda offer: offer.status == "accept")[:1]
+            if not accepted_offer:
+                raise UserError("You must accept an offer before marking the property as sold.")
+
+            accepted_offer.status = "sold"
+            record.write({
+                "buyer": accepted_offer.partner_id.name,
+                "selling_price": accepted_offer.price,
+                "status": "sold",
+            })
         return True
 
     def set_status_to_cancel(self):
@@ -126,15 +137,24 @@ class EstateProperty(models.Model):
             if record.status == "sold":
                 raise UserError("Cannot cancel a sold property.")
             record.status = "cancelled"
+            record.offer_ids.filtered(lambda offer: offer.status != "sold").write({"status": "cancelled"})
         return True
 
-    def reset_status(self):
+    def reopen_offers(self):
         for record in self:
-            if record.status in ("sold", "cancelled", "offer_recieved"):
-                new_status = "offer_recieved" if record.offer_ids else "new"
-                record.with_context(bypass_reset=True).write({"status": new_status})
-            for offer in record.offer_ids.filtered(lambda x: x.status in ("accept", "refuse")):
-                offer.status = "new"
+            if record.status == "sold":
+                raise UserError("You cannot reopen offers for a sold property.")
+            if record.status not in ("offer_accepted", "cancelled"):
+                raise UserError("Offers can only be reopened from accepted or cancelled status.")
+
+            record.offer_ids.filtered(
+                lambda offer: offer.status in ("accept", "refuse", "cancelled")
+            ).write({"status": "new"})
+            record.with_context(bypass_reset=True).write({
+                "status": "offer_recieved" if record.offer_ids else "new",
+                "buyer": False,
+                "selling_price": 0.0,
+            })
         return True
 
     # ----- CRUD -----
@@ -157,7 +177,7 @@ class EstateProperty(models.Model):
         if self.env.context.get("bypass_reset"):
             return super().write(vals)
         for record in self:
-            if record.status in ["sold", "cancelled"] and set(vals) & protected:
+            if record.status in ["offer_accepted", "sold", "cancelled"] and set(vals) & protected:
                 raise UserError(
                     f"Cannot modify property '{record.name}' because it is in '{record.status}' state."
                 )

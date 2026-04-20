@@ -56,7 +56,7 @@ export class EstateDashboard extends Component {
                 offers,
             ] = await Promise.all([
                 this.orm.searchCount("estate.property", [["status", "=", "new"]]),
-                this.orm.searchCount("estate.property", [["status", "=", "offer_recieved"]]),
+                this.orm.searchCount("estate.property", [["status", "in", ["offer_recieved", "offer_accepted"]]]),
                 this.orm.searchCount("estate.property", [["status", "=", "sold"]]),
                 this.orm.searchCount("estate.property.offer", [["status", "=", "new"]]),
                 this.orm.searchRead(
@@ -223,7 +223,7 @@ export class EstateDashboard extends Component {
     }
 
     openOfferReceivedProperties() {
-        this.openPropertyAction([["status", "=", "offer_recieved"]], "Offer Received Properties");
+        this.openPropertyAction([["status", "in", ["offer_recieved", "offer_accepted"]]], "Offer Pipeline Properties");
     }
 
     openSoldProperties() {

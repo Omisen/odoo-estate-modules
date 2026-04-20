@@ -77,19 +77,23 @@ class EstatePropertyOffer(models.Model):
     # ----- Button actions -----
     def set_offer_to_refuse(self):
         for record in self:
-            if record.property_id.status in ["sold", "cancelled"]:
-                raise UserError("Cannot refuse an offer on a sold/cancelled property.")
+            if record.property_id.status in ["offer_accepted", "sold", "cancelled"]:
+                raise UserError("Cannot refuse an offer on an accepted, sold, or cancelled property.")
             record.status = "refuse"
         return True
 
     def set_offer_to_accept(self):
         for record in self:
-            if record.property_id.status in ["sold", "cancelled"]:
-                raise UserError("Cannot accept an offer on a sold/cancelled property.")
+            if record.property_id.status in ["offer_accepted", "sold", "cancelled"]:
+                raise UserError("An offer has already been finalized for this property.")
+            other_offers = record.property_id.offer_ids.filtered(
+                lambda offer: offer.id != record.id and offer.status != "refuse"
+            )
+            other_offers.write({"status": "cancelled"})
             record.status = "accept"
             record.property_id.buyer = record.partner_id.name
             record.property_id.selling_price = record.price
-            record.property_id.status = "sold"
+            record.property_id.status = "offer_accepted"
         return True
 
     # ----- CRUD ------
@@ -98,6 +102,11 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             prop = self.env["estate.property"].browse(vals.get("property_id"))
             offer_price = vals.get("price", 0)
+
+            if prop.status in ["offer_accepted", "sold", "cancelled"]:
+                raise ValidationError(
+                    "Cannot create a new offer for a property that is accepted, sold, or cancelled."
+                )
 
             if prop.expected_price and prop.selling_price:
                 min_price = prop.expected_price * 0.90

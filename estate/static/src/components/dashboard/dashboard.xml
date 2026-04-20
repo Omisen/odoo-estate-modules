@@ -30,7 +30,7 @@
                     <div class="col-12 col-md-6 col-xl-3">
                         <button class="card o_estate_dashboard_card w-100 text-start" t-on-click="openOfferReceivedProperties">
                             <div class="card-body">
-                                <div class="o_estate_dashboard_label">Offer Received</div>
+                                <div class="o_estate_dashboard_label">Offer Pipeline</div>
                                 <div class="o_estate_dashboard_value" t-esc="state.propertyOfferReceivedCount"/>
                             </div>
                         </button>
