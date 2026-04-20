@@ -147,9 +147,20 @@ class EstateProperty(models.Model):
             if record.status not in ("offer_accepted", "cancelled"):
                 raise UserError("Offers can only be reopened from accepted or cancelled status.")
 
+            accepted_offer = record.offer_ids.filtered(lambda offer: offer.status == "accept")[:1]
+            if not accepted_offer and record.buyer and record.selling_price:
+                accepted_offer = record.offer_ids.filtered(
+                    lambda offer: offer.partner_id.name == record.buyer
+                    and float_compare(offer.price, record.selling_price, precision_digits=2) == 0
+                )[:1]
+
+            if accepted_offer:
+                accepted_offer.status = "accept"
+
             record.offer_ids.filtered(
-                lambda offer: offer.status in ("accept", "refuse", "cancelled")
-            ).write({"status": "new"})
+                lambda offer: offer != accepted_offer and offer.status in ("refuse", "cancelled")
+            ).write({"status": "refuse"})
+
             record.with_context(bypass_reset=True).write({
                 "status": "offer_recieved" if record.offer_ids else "new",
                 "buyer": False,

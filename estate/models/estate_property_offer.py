@@ -87,9 +87,9 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.status in ["offer_accepted", "sold", "cancelled"]:
                 raise UserError("An offer has already been finalized for this property.")
             other_offers = record.property_id.offer_ids.filtered(
-                lambda offer: offer.id != record.id and offer.status != "refuse"
+                lambda offer: offer.id != record.id and offer.status != "sold"
             )
-            other_offers.write({"status": "cancelled"})
+            other_offers.write({"status": "refuse"})
             record.status = "accept"
             record.property_id.buyer = record.partner_id.name
             record.property_id.selling_price = record.price
