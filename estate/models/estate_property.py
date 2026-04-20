@@ -140,6 +140,22 @@ class EstateProperty(models.Model):
             record.offer_ids.filtered(lambda offer: offer.status != "sold").write({"status": "cancelled"})
         return True
 
+    # reset button for debug
+    def action_reset_to_offer_received(self):
+        for record in self:
+            if record.status not in ("sold", "cancelled"):
+                raise UserError(
+                    "You can use this action only when the property is sold or cancelled."
+                )
+
+            record.offer_ids.write({"status": "new"})
+            record.with_context(bypass_reset=True).write({
+                "status": "offer_recieved",
+                "buyer": False,
+                "selling_price": 0.0,
+            })
+        return True
+
     def reopen_offers(self):
         for record in self:
             if record.status == "sold":

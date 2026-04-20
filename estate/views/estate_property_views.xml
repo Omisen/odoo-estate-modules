@@ -44,6 +44,16 @@
                             string="Reopen Offers"
                             confirm="This will reopen the negotiation and let you choose a different offer. Continue?"
                             invisible="status not in ('offer_accepted', 'cancelled') or offer_count == 0"/>
+                    
+                    <!-- testig button for debug mode -->
+                    <button name="action_reset_to_offer_received"
+                            type="object"
+                            string="Reset"
+                            class="btn-warning"
+                            groups="base.group_no_one"
+                            confirm="Testing only: reset the property to Offer Received and all related offers to New?"
+                            invisible="status not in ('sold', 'cancelled')"/>
+                    
                     <button name="%(action_report_estate_property_html)d"
                             type="action"
                             class="oe_highlight"
@@ -55,7 +65,7 @@
                     <field  name="offer_count" 
                             widget="estate_offer_count_badge"
                             nolabel="1"
-                            invisible="status == 'sold' or 'new'"/>
+                            invisible="status == 'sold' or status == 'new'"/>
                     <field name="status" widget="estate_status_badge" nolabel="1"/>
                 </header>
                 <sheet>
