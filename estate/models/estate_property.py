@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_id = fields.Many2many("estate.property.tag", string="Tags")
     description = fields.Text(compute="_compute_offers_presence", store=True)
-    bedrooms = fields.Integer()
+    bedrooms = fields.Integer(string="Rooms")
     living_area = fields.Integer(string="Living Area (sqm)")
     garage = fields.Boolean()
     garden = fields.Boolean()
@@ -51,7 +51,11 @@ class EstateProperty(models.Model):
     )
     buyer = fields.Char(readonly=True)
     selling_price = fields.Float(readonly=True)
-    salesperson_id = fields.Many2one("res.users", string="Salesperson")
+    salesperson_id = fields.Many2one(
+        "res.users",
+        string="Salesperson",
+        default=lambda self: self.env.user,
+    )
     offer_count = fields.Integer(string="Offer Count", compute="_compute_offer_count", store=True, readonly=True)
 
     # ----- Constraints -----
