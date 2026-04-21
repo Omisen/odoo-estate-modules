@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_estate_property_form_account" model="ir.ui.view">
+        <field name="name">estate.property.form.account</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.view_estate_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='set_status_to_sold']" position="after">
+                <button name="action_open_invoice"
+                        type="object"
+                        string="Open Invoice"
+                        class="oe_highlight"
+                        invisible="status != 'sold'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

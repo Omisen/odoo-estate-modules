@@ -1,6 +1,8 @@
-# Modulo Estate — Documentazione Completa
+# Moduli Estate — Documentazione Completa
 
-> **Estate** è un modulo Odoo 18 sviluppato a scopo formativo che implementa un sistema di gestione immobiliare completo: annunci, offerte, tipologie e tag di proprietà, con dashboard OWL custom, widget personalizzati e report PDF.
+> Questo repository contiene due moduli Odoo 18 sviluppati a scopo formativo:
+> - **Estate** — sistema di gestione immobiliare completo: annunci, offerte, tipologie e tag di proprietà, con dashboard OWL custom, widget personalizzati e report PDF.
+> - **Estate Account** — estensione di Estate che integra la fatturazione Odoo: genera automaticamente una bozza di fattura cliente alla vendita di una proprietà ed espone il bottone "Open Invoice" nella form.
 
 ---
 
@@ -29,10 +31,13 @@
 9. [Dati Predefiniti (Demo & Seed)](#9-dati-predefiniti-demo--seed)
 10. [Scelte Architetturali](#10-scelte-architetturali)
 11. [Diagramma Relazioni tra Modelli](#11-diagramma-relazioni-tra-modelli)
+12. [Modulo Estate Account](#12-modulo-estate-account)
 
 ---
 
 ## 1. Panoramica Generale
+
+### Modulo `estate`
 
 | Attributo | Valore |
 |---|---|
@@ -44,6 +49,19 @@
 | App name | **Real Estate** |
 
 Il modulo espone una voce di menu **Real Estate** nel backend Odoo e gestisce l'intero ciclo di vita di un annuncio immobiliare: dalla pubblicazione, alla raccolta e gestione delle offerte, fino alla vendita o alla cancellazione.
+
+### Modulo `estate_account`
+
+| Attributo | Valore |
+|---|---|
+| Nome tecnico | `estate_account` |
+| Versione | 1.0 |
+| Licenza | LGPL-3 |
+| Dipendenze | `estate`, `account` |
+| Tipo | Applicazione (`application: True`) |
+| Autore | Simone |
+
+Estensione del modulo `estate` che integra il sottosistema contabile di Odoo. Genera automaticamente una bozza di fattura cliente (`out_invoice`) al momento della vendita di una proprietà e aggiunge il bottone **Open Invoice** nella form, visibile solo quando lo stato è `sold`.
 
 ---
 
@@ -82,6 +100,14 @@ estate/
     ├── dashboard/                 # OWL Dashboard completa
     ├── status_badge_widget/       # Widget campo Selection con stile custom
     └── offer_count_badge_widget/  # Widget contatore offerte
+
+estate_account/
+├── __manifest__.py              # Dipendenze: estate + account
+├── __init__.py
+├── models/
+│   └── estate_property.py       # _inherit estate.property: fatturazione
+└── views/
+    └── estate_property_views.xml # Vista ereditata: bottone Open Invoice
 ```
 
 ---
@@ -133,7 +159,7 @@ estate/
 
 | Metodo | Descrizione |
 |---|---|
-| `set_status_to_sold()` | Richiede un'offerta accettata → passa a `sold`, scrive `buyer` e `selling_price` |
+| `set_status_to_sold()` | Richiede un'offerta accettata → passa a `sold`, scrive `buyer` e `selling_price`. Se `estate_account` è installato: crea anche la bozza fattura e la collega via `invoice_id` |
 | `set_status_to_cancel()` | Cancella la proprietà e tutte le offerte non vendute |
 | `reopen_offers()` | Da `offer_accepted` o `cancelled`: riapre la negoziazione |
 | `action_reset_to_offer_received()` | Debug only (`group_no_one`): reimposta tutto a `offer_recieved` |
@@ -535,3 +561,75 @@ estate.property.tag
 ```
 
 ---
+
+## 12. Modulo Estate Account
+
+Il modulo `estate_account` estende `estate.property` tramite `_inherit` per aggiungere la generazione automatica di fatture cliente al momento della vendita.
+
+### 12.1 Struttura
+
+```
+estate_account/
+├── __manifest__.py
+│   depends: ['estate', 'account']
+├── __init__.py
+├── models/
+│   └── estate_property.py   # _inherit "estate.property"
+└── views/
+    └── estate_property_views.xml  # Vista ereditata con bottone Open Invoice
+```
+
+### 12.2 Campi aggiunti a `estate.property`
+
+| Campo | Tipo | Note |
+|---|---|---|
+| `invoice_id` | Many2one → `account.move` | Riferimento alla fattura generata; readonly, non copiato (`copy=False`) |
+
+### 12.3 Override di `set_status_to_sold()`
+
+Il metodo chiama `super()` (esegue la logica base di estate) e poi, per ogni proprietà venduta:
+
+1. Recupera l'offerta con `status == 'sold'` — solleva `UserError` se non trovata.
+2. Crea una bozza `out_invoice` con `partner_id` dell'offerente e due righe:
+   - **Commissione agente**: `selling_price × 6%`
+   - **Spese amministrative**: €100,00 fissi
+3. Salva il riferimento della fattura in `record.invoice_id`.
+
+### 12.4 Metodo `action_open_invoice()`
+
+Restituisce un `ir.actions.act_window` che apre la form della fattura collegata in vista corrente (`target: "current"`). Usato dal bottone "Open Invoice" nella form della proprietà.
+
+### 12.5 Vista ereditata
+
+Il file `views/estate_property_views.xml` inietta tramite `xpath` un bottone nell'header della form di `estate.property`, subito dopo il bottone "Mark as Sold":
+
+```xml
+<button name="action_open_invoice"
+        type="object"
+        string="Open Invoice"
+        class="oe_highlight"
+        invisible="status != 'sold'"/>
+```
+
+Il bottone è **visibile solo quando `status == 'sold'`** — quando la proprietà è in qualsiasi altro stato non compare.
+
+### 12.6 Logica di scelta: `type="object"` vs stat button
+
+Il bottone usa `type="object"` (non uno stat button) perché:
+- Naviga verso **un singolo record** in form view, non verso una lista.
+- Lo stat button (`oe_stat_button`) è appropriato quando si vuole mostrare un **contatore** con navigazione verso una lista filtrata (es. il contatore offerte in `estate.property.type`).
+- In questo caso non c'è nessun conteggio da mostrare, solo l'apertura diretta della fattura draft.
+
+### 12.7 Diagramma relazione aggiuntiva
+
+```
+estate.property
+    │
+    │ invoice_id (Many2one, aggiunto da estate_account)
+    ▼
+account.move (Odoo built-in — Customer Invoice)
+    │
+    │ partner_id
+    ▼
+res.partner (Odoo built-in)
+```

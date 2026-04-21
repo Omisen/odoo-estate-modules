@@ -11,7 +11,9 @@
     'sequence': 2,
     'installable': True,
     
-    'data':[],
+    'data': [
+        'views/estate_property_views.xml',
+    ],
     'assets': {},
     'author': 'Simone',
 }
