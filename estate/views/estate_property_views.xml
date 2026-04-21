@@ -65,7 +65,7 @@
                     <field  name="offer_count" 
                             widget="estate_offer_count_badge"
                             nolabel="1"
-                            invisible="status == 'sold' or status == 'new'"/>
+                            invisible="status in ('sold','new','cancelled')"/>
                     <field name="status" widget="estate_status_badge" nolabel="1"/>
                 </header>
                 <sheet>

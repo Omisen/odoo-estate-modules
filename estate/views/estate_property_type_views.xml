@@ -58,6 +58,24 @@
         </field>
     </record>
 
+    <!-- Search View -->
+    <record id="view_estate_property_type_search" model="ir.ui.view">
+        <field name="name">estate.property.type.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Property Types">
+                <field name="name"/>
+                <filter string="Residential" name="filter_residential" domain="[('category', '=', 'residential')]"/>
+                <filter string="Commercial"  name="filter_commercial"  domain="[('category', '=', 'commercial')]"/>
+                <filter string="Land"        name="filter_land"        domain="[('category', '=', 'land')]"/>
+                <filter string="Hospitality" name="filter_hospitality" domain="[('category', '=', 'hospitality')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_category" string="Category" context="{'group_by': 'category'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- Action -->
     <record id="action_estate_property_type" model="ir.actions.act_window">
         <field name="name">Types</field>

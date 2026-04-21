@@ -3,7 +3,7 @@
         
         <record id="estate_property_bigvilla" model="estate.property">
             <field name="name">Big Villa</field>
-            <field name="status">new</field>
+            <field name="status">offer_recieved</field>
             <field name="postcode">12345</field>
             <field name="date_availability" eval="(datetime.now()-relativedelta(days=21)).strftime('%Y-%m-%d %H:%M:%S')"/>
             <field name="expected_price">1600000</field>
@@ -32,12 +32,12 @@
             <field name="living_area">10</field>
             <field name="garage" eval="False"/>
             <field name="property_tag_id" eval="[Command.set([ref('estate_property_tag_residential'), ref('estate_property_tag_renovated')])]"/>
-            <field name="property_type_id" ref="estate.estate_property_type_residential"/>
+            <field name="property_type_id" ref="estate.estate_property_type_trailerhome"/>
         </record>
 
         <record id="estate_property_cityloft" model="estate.property">
             <field name="name">City Loft</field>
-            <field name="status">new</field>
+            <field name="status">offer_recieved</field>
             <field name="postcode">20100</field>
             <field name="date_availability" eval="(datetime.now()+relativedelta(days=15)).strftime('%Y-%m-%d %H:%M:%S')"/>
             <field name="expected_price">320000</field>
@@ -46,6 +46,12 @@
             <field name="garage" eval="False"/>
             <field name="garden" eval="False"/>
             <field name="property_tag_id" eval="[Command.set([ref('estate_property_tag_residential')])]"/>
+            <field name="offer_ids" eval="[
+                Command.create({'partner_id': ref('base.res_partner_2'), 'price': 312000, 'validity': 11}),
+                Command.create({'partner_id': ref('base.res_partner_12'), 'price': 315000, 'validity': 9}),
+                Command.create({'partner_id': ref('base.res_partner_10'), 'price': 319000, 'validity': 4}),
+                Command.create({'partner_id': ref('base.res_partner_1'), 'price': 320000, 'validity': 13}),
+            ]"/>
             <field name="property_type_id" ref="estate.estate_property_type_appartament"/>
         </record>
 
@@ -62,7 +68,7 @@
             <field name="garden_area">250</field>
             <field name="garden_orientation">east</field>
             <field name="property_tag_id" eval="[Command.set([ref('estate_property_tag_residential'), ref('estate_property_tag_renovated')])]"/>
-            <field name="property_type_id" ref="estate.estate_property_type_residential"/>
+            <field name="property_type_id" ref="estate.estate_property_type_cottage"/>
         </record>
 
         <record id="estate_property_oldwarehouse" model="estate.property">
@@ -76,7 +82,7 @@
             <field name="garage" eval="True"/>
             <field name="garden" eval="False"/>
             <field name="property_tag_id" eval="[Command.set([ref('estate_property_tag_renovated')])]"/>
-            <field name="property_type_id" ref="estate.estate_property_type_industrial"/>
+            <field name="property_type_id" ref="estate.estate_property_type_warehouse"/>
         </record>
 
     </data>
