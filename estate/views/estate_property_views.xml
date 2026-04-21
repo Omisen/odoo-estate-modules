@@ -105,7 +105,7 @@
                             <field name="expected_price"
                                    invisible="status == 'sold'"
                                    readonly="status in ('offer_accepted', 'cancelled')"/>
-                            <field name="best_price" invisible="status == 'sold'" readonly="1"/>
+                            <field name="best_price" invisible="status == 'sold'" readonly="1" help="is readonly field related to a computed in the backend that allways returns the top best offer if is there at least one"/>
                             <field name="selling_price" invisible="status not in ('offer_accepted', 'sold')" readonly="1"/>
                             <field name="buyer" invisible="status not in ('offer_accepted', 'sold')" readonly="1"/>
                         </group>

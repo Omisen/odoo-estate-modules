@@ -12,7 +12,10 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_id = fields.Many2many("estate.property.tag", string="Tags")
-    description = fields.Text(compute="_compute_offers_presence", store=True)
+    description = fields.Text(
+        compute="_compute_offers_presence",
+        store=True,
+        help="concatenation of string of names from res.partner_ids")
     bedrooms = fields.Integer(string="Rooms")
     living_area = fields.Integer(string="Living Area (sqm)")
     garage = fields.Boolean()
@@ -39,8 +42,15 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     expected_price = fields.Float(required=True)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    total_area = fields.Integer(compute="_computed_total_areas", store=True, string="Total Area (sqm)")
-    best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store=True, readonly=True)
+    total_area = fields.Integer(
+        compute="_computed_total_areas",
+        store=True,
+        string="Total Area (sqm)")
+    best_price = fields.Float(
+        string="Best Offer",
+        compute="_compute_best_price",
+        store=True,
+        readonly=True)
     status = fields.Selection(
         selection=[
             ("new", "New"),
@@ -59,8 +69,13 @@ class EstateProperty(models.Model):
         string="Salesperson",
         default=lambda self: self.env.user,
     )
-    offer_count = fields.Integer(string="Offer Count", compute="_compute_offer_count", store=True, readonly=True)
+    offer_count = fields.Integer(
+        string="Offer Count",
+        compute="_compute_offer_count",
+        store=True,
+        readonly=True)
     property_type_category = fields.Selection(related="property_type_id.category", store=False)
+    
     # ----- Constraints -----
     @api.constrains("garden_area", "garden")
     def _check_garden_area(self):
