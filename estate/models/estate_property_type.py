@@ -8,6 +8,22 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(required=True)
     sequence = fields.Integer(default=1, help="Used to order stages. Lower is better.")
+    
+    # --- legend ---
+    # RESIDENTIAL (Appartamenti, Ville, Loft)
+    # COMMERCIAL (Uffici, Negozi, Magazzini)
+    # LAND (Terreni agricoli, Edificabili)
+    # HOSPITALITY (Hotel, B&B, Case vacanza)
+    category = fields.Selection(
+        selection=[
+        ('residential', 'Residential'),
+        ('commercial', 'Commercial'),
+        ('land', 'Land'),
+        ('hospitality', 'Hospitality'),
+        ],
+        required=True,
+        string="Category")
+    
     property_ids = fields.One2many("estate.property", "property_type_id", string="Properties")
     offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Offers")
     offer_count = fields.Integer(string="Offers Count", compute="_compute_offer_count")
