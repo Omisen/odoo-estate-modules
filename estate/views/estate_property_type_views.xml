@@ -6,7 +6,7 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Property Types" editable="bottom" open_form_view="1">
+            <list string="Property Types" editable="top" open_form_view="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name" placeholder="Type: es 'Villa'"/>
                 <field name="category"/>
