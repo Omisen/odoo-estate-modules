@@ -45,8 +45,7 @@ export class EstateDashboard extends Component {
             const [company] = await this.orm.read("res.company", [currentCompanyId], ["currency_id"]);
             this.state.currencyId = company?.currency_id?.[0] || null;
 
-            // esegue in parallelo tutte le query principali del dashboard
-            // per ridurre il tempo di caricamento
+            // esegue in parallelo tutte le query principali del dashboard per ridurre il tempo di caricamento
             const [
                 propertyNewCount,
                 propertyOfferReceivedCount,
