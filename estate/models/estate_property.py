@@ -18,14 +18,16 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
+    field_area = fields.Integer(string="Filed Area (sqm)")
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),
             ("west", "West"),
             ("south", "South"),
             ("east", "East"),
+            ("all_arround", "All Arround")
         ],
-        string="Garden Orientation",
+        string="Orientation",
     )
     date_availability = fields.Date(
         string="Availability Date",
@@ -58,13 +60,18 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user,
     )
     offer_count = fields.Integer(string="Offer Count", compute="_compute_offer_count", store=True, readonly=True)
-
+    property_type_category = fields.Selection(related="property_type_id.category", store=False)
     # ----- Constraints -----
     @api.constrains("garden_area", "garden")
     def _check_garden_area(self):
         for record in self:
-            if record.garden and record.garden_area <= 0:
-                raise ValidationError("Garden area must be greater than zero.")
+            if record.garden:
+                if record.property_type_category == "land":
+                    if record.field_area <= 0:
+                        raise ValidationError("Field area must be greater than zero.")
+                else:
+                    if record.garden_area <= 0:
+                        raise ValidationError("Garden area must be greater than zero.")
 
     @api.constrains("expected_price")
     def _check_expected_price(self):
@@ -84,10 +91,10 @@ class EstateProperty(models.Model):
                     )
 
     # ----- Computed -----
-    @api.depends("living_area", "garden_area")
+    @api.depends("living_area", "garden_area", "field_area")
     def _computed_total_areas(self):
         for record in self:
-            record.total_area = record.living_area + record.garden_area
+            record.total_area = record.living_area + record.garden_area + record.field_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -104,8 +111,13 @@ class EstateProperty(models.Model):
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
+            if self.property_type_category == "land":
+                self.field_area = 500
+                self.garden_area = 0
+                self.garden_orientation = "all_arround"
+            else:
+                self.garden_area = 100
+                self.garden_orientation = "north"
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):

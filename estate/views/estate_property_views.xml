@@ -112,7 +112,7 @@
                     </group>
 
                     <notebook>
-                        <page string="Indoor">
+                        <page string="Indoor" invisible="property_type_category == 'land'">
                             <group>
                                 <group>
                                     <field name="bedrooms" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
@@ -124,10 +124,12 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Outdoor">
+                        <page string="Outdoor" invisible="property_type_category == 'commercial'">
                             <group>
-                                <field name="garden" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
-                                <field name="garden_area" invisible="garden == False" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
+                                <field name="garden" readonly="status in ('offer_accepted', 'sold', 'cancelled')" invisible="property_type_category == 'land'" string="Garden"/>
+                                <field name="garden" readonly="status in ('offer_accepted', 'sold', 'cancelled')" invisible="property_type_category != 'land'" string="Fields"/>
+                                <field name="garden_area" invisible="garden == False or property_type_category == 'land'" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
+                                <field name="field_area" invisible="garden == False or property_type_category != 'land'" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
                                 <field name="garden_orientation" required="garden == True" invisible="garden == False" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
                             </group>
                         </page>
