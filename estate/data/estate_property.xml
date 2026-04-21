@@ -13,7 +13,7 @@
             <field name="garden" eval="True"/>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
-            <field name="property_tag_id" eval="[Command.set([ref('estate.estate_property_tag_new_construction'), ref('estate_property_tag_luxury'), ref('estate_property_tag_sea_view')])]"/>
+            <field name="property_tag_id" eval="[Command.set([ref('estate.estate_property_tag_new_construction'), ref('estate.estate_property_tag_luxury'), ref('estate.estate_property_tag_sea_view'), ref('estate.estate_property_tag_garden'), ref('estate.estate_property_tag_swimming_pool')])]"/>
             <field name="offer_ids" eval="[
                 Command.create({'partner_id': ref('base.res_partner_12'), 'price': 1450000, 'validity': 7}),
                 Command.create({'partner_id': ref('base.res_partner_10'), 'price': 1525000, 'validity': 10}),
@@ -31,7 +31,7 @@
             <field name="bedrooms">1</field>
             <field name="living_area">10</field>
             <field name="garage" eval="False"/>
-            <field name="property_tag_id" eval="[Command.set([ref('estate_property_tag_residential'), ref('estate_property_tag_renovated')])]"/>
+            <field name="property_tag_id" eval="[Command.set([ref('estate.estate_property_tag_residential'), ref('estate.estate_property_tag_renovated'), ref('estate.estate_property_tag_quiet_area')])]"/>
             <field name="property_type_id" ref="estate.estate_property_type_trailerhome"/>
         </record>
 
@@ -45,7 +45,7 @@
             <field name="living_area">85</field>
             <field name="garage" eval="False"/>
             <field name="garden" eval="False"/>
-            <field name="property_tag_id" eval="[Command.set([ref('estate_property_tag_residential')])]"/>
+            <field name="property_tag_id" eval="[Command.set([ref('estate.estate_property_tag_residential'), ref('estate.estate_property_tag_central_location'), ref('estate.estate_property_tag_smart_home'), ref('estate.estate_property_tag_terrace')])]"/>
             <field name="offer_ids" eval="[
                 Command.create({'partner_id': ref('base.res_partner_2'), 'price': 312000, 'validity': 11}),
                 Command.create({'partner_id': ref('base.res_partner_12'), 'price': 315000, 'validity': 9}),
@@ -67,7 +67,7 @@
             <field name="garden" eval="True"/>
             <field name="garden_area">250</field>
             <field name="garden_orientation">east</field>
-            <field name="property_tag_id" eval="[Command.set([ref('estate_property_tag_residential'), ref('estate_property_tag_renovated')])]"/>
+            <field name="property_tag_id" eval="[Command.set([ref('estate.estate_property_tag_residential'), ref('estate.estate_property_tag_renovated'), ref('estate.estate_property_tag_garden'), ref('estate.estate_property_tag_quiet_area'), ref('estate.estate_property_tag_energy_efficient')])]"/>
             <field name="property_type_id" ref="estate.estate_property_type_cottage"/>
         </record>
 
@@ -81,7 +81,7 @@
             <field name="living_area">200</field>
             <field name="garage" eval="True"/>
             <field name="garden" eval="False"/>
-            <field name="property_tag_id" eval="[Command.set([ref('estate_property_tag_renovated')])]"/>
+            <field name="property_tag_id" eval="[Command.set([ref('estate.estate_property_tag_commercial'), ref('estate.estate_property_tag_renovated'), ref('estate.estate_property_tag_investment'), ref('estate.estate_property_tag_parking')])]"/>
             <field name="property_type_id" ref="estate.estate_property_type_warehouse"/>
         </record>
 

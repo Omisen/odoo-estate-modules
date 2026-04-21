@@ -9,11 +9,6 @@ class EstatePropertyType(models.Model):
     name = fields.Char(required=True)
     sequence = fields.Integer(default=1, help="Used to order stages. Lower is better.")
     
-    # --- legend ---
-    # RESIDENTIAL (Appartamenti, Ville, Loft)
-    # COMMERCIAL (Uffici, Negozi, Magazzini)
-    # LAND (Terreni agricoli, Edificabili)
-    # HOSPITALITY (Hotel, B&B, Case vacanza)
     category = fields.Selection(
         selection=[
         ('residential', 'Residential'),
