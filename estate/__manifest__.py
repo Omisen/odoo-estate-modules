@@ -3,8 +3,10 @@
     'name': 'Estate',
     'version': '1.0',
     'license': 'LGPL-3',
-    'category': '',
-    'summary': 'Estate module for training purpouse',
+
+    'summary': 'Manage real estate properties, offers, and sales pipeline.',
+    'description': 'Full real estate management: property listings, buyer offers, offer acceptance, and automated sold/cancelled status transitions. Includes kanban dashboard, tags, property types, and PDF reports.',
+    'category': 'Real Estate',
     'author': 'Simone',
 
     # ------ Dependencies ------
