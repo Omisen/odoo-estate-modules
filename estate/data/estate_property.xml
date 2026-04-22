@@ -3,6 +3,7 @@
         
         <record id="estate_property_bigvilla" model="estate.property">
             <field name="name">Big Villa</field>
+            <field name="description">Prestigious luxury villa with 6 bedrooms, sprawling south-facing garden and private swimming pool. Fully equipped garage and breathtaking sea views. Ideal for high-end buyers seeking exclusivity and space.</field>
             <field name="status">offer_recieved</field>
             <field name="postcode">12345</field>
             <field name="date_availability" eval="(datetime.now()-relativedelta(days=21)).strftime('%Y-%m-%d %H:%M:%S')"/>
@@ -24,6 +25,7 @@
         
         <record id="estate_property_trailerhome" model="estate.property">
             <field name="name">Trailer Home</field>
+            <field name="description">Compact single-bedroom trailer home, ideal as a starter property or investment. Located in a quiet area and recently renovated. Suitable for budget-conscious buyers or seasonal use.</field>
             <field name="status">cancelled</field>
             <field name="postcode">54321</field>
             <field name="date_availability" eval="(datetime.now()-relativedelta(days=21)).strftime('%Y-%m-%d %H:%M:%S')"/>
@@ -37,6 +39,7 @@
 
         <record id="estate_property_cityloft" model="estate.property">
             <field name="name">City Loft</field>
+            <field name="description">Modern 2-bedroom loft in the heart of the city. Smart home technology, private terrace and premium finishes throughout. Perfect for professionals or couples looking for urban living at its best.</field>
             <field name="status">offer_recieved</field>
             <field name="postcode">20100</field>
             <field name="date_availability" eval="(datetime.now()+relativedelta(days=15)).strftime('%Y-%m-%d %H:%M:%S')"/>
@@ -57,6 +60,7 @@
 
         <record id="estate_property_greencottage" model="estate.property">
             <field name="name">Green Cottage</field>
+            <field name="description">Charming 3-bedroom energy-efficient cottage with east-facing garden and private garage. Recently renovated and nestled in a peaceful countryside area. A perfect family home away from city noise.</field>
             <field name="status">new</field>
             <field name="postcode">33010</field>
             <field name="date_availability" eval="(datetime.now()+relativedelta(days=30)).strftime('%Y-%m-%d %H:%M:%S')"/>
@@ -73,6 +77,7 @@
 
         <record id="estate_property_oldwarehouse" model="estate.property">
             <field name="name">Old Warehouse</field>
+            <field name="description">Spacious 200 sqm industrial warehouse with parking and garage. Partially renovated and ready for commercial use or conversion. Strong investment potential in a well-connected industrial zone.</field>
             <field name="status">cancelled</field>
             <field name="postcode">45000</field>
             <field name="date_availability" eval="(datetime.now()-relativedelta(days=10)).strftime('%Y-%m-%d %H:%M:%S')"/>

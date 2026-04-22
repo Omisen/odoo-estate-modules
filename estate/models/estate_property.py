@@ -12,11 +12,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_id = fields.Many2many("estate.property.tag", string="Tags")
-    # FIXME this is a descriptive field, actually used to  compute names of partenr offers 
-    description = fields.Text(
-        compute="_compute_offers_presence",
-        store=True,
-        help="concatenation of string of names from res.partner_ids")
+    description = fields.Text(string="Description")
     bedrooms = fields.Integer(string="Rooms")
     living_area = fields.Integer(string="Living Area (sqm)")
     garage = fields.Boolean()
@@ -124,11 +120,6 @@ class EstateProperty(models.Model):
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
 
-    @api.depends("offer_ids.partner_id.name")
-    def _compute_offers_presence(self):
-        for record in self:
-            unique_names = list(set(record.offer_ids.mapped("partner_id.name")))
-            record.description = f"Offer partners: {', '.join(unique_names)}"
     # BUG if garden = false the other fields wont be set on zero
     @api.onchange("garden")
     def _onchange_garden(self):

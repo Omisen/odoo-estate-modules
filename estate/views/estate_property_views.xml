@@ -120,7 +120,7 @@
                                     <field name="garage" readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
                                 </group>
                                 <group>
-                                    <field name="description" readonly="1"/>
+                                    <field name="description" readonly="status in ('offer_accepted', 'sold', 'cancelled')" options="{'rows': 3}"/>
                                 </group>
                             </group>
                         </page>
