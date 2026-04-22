@@ -6,9 +6,16 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     invoice_id = fields.Many2one("account.move", string="Invoice", copy=False, readonly=True)
-
+    
     def set_status_to_sold(self):
         result = super().set_status_to_sold()
+        
+        # recupero dei valori dati di coomission rate dalle inserito in impostazioni
+        commission_rate = float(
+            self.env['ir.config_parameter'].sudo().get_param(
+                'estate_account.commission_rate', default=0.06,
+            )
+        ) 
 
         for record in self:
             sold_offer = record.offer_ids.filtered(lambda offer: offer.status == "sold")[:1]
@@ -22,7 +29,8 @@ class EstateProperty(models.Model):
                     Command.create({
                         "name": record.name,
                         "quantity": 1,
-                        "price_unit": record.selling_price * 0.06,
+                        # fix del codice con campo valorizzato da impostare nelle impostazioni di odoo con 0.06 come default
+                        "price_unit": record.selling_price * commission_rate,
                     }),
                     Command.create({
                         "name": "Administrative fees",
