@@ -21,12 +21,13 @@
                 <menuitem id="menu_estate_property_offer_list" action="action_estate_property_offer_all" sequence="3" groups="base.group_no_one"/>
             </menuitem>
 
-            <menuitem id="menu_settings_odoo" name="General">
-                <menuitem name="Odoo Settings" id="menu_odoo_config_settings" action="base.res_config_setting_act_window" sequence="10"/>
+            <menuitem id="menu_settings_odoo" name="Odoo Settings">
+                <menuitem name="Estate General" id="menu_odoo_config_settings" action="base.res_config_setting_act_window" sequence="10"/>
             </menuitem>
 
         </menuitem>
 
     </menuitem>
+    
 
 </odoo>
