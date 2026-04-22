@@ -106,10 +106,16 @@ class EstateProperty(models.Model):
                     )
 
     # ----- Computed -----
-    @api.depends("living_area", "garden_area", "field_area")
+    @api.depends("living_area", "garden_area", "field_area", "property_type_id.category")
     def _computed_total_areas(self):
         for record in self:
-            record.total_area = record.living_area + record.garden_area + record.field_area
+            category = record.property_type_category
+            if category == "land":
+                record.total_area = record.field_area
+            elif category == "commercial":
+                record.total_area = record.living_area
+            else:
+                record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
