@@ -22,6 +22,7 @@
 
     # ----- Data ------
     'data': [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'data/estate.property.type.csv',
         'data/estate.property.tag.csv',

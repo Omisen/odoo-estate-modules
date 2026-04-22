@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="module_estate" model="ir.module.category">
+            <field name="name">Real Estate</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- estate user can manage properties and offers readonly on types or tags -->
+        <record id="group_estate_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_estate"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- estate manager has full control and inherits from estate user -->
+        <record id="group_estate_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_estate"/>
+            <field name="implied_ids" eval="[(4, ref('group_estate_user'))]"/>
+        </record>
+
+    </data>
+</odoo>
