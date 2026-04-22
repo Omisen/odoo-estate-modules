@@ -59,7 +59,7 @@ class EstateProperty(models.Model):
         default="new",
         readonly=True,
     )
-    buyer = fields.Char(readonly=True)
+    buyer = fields.Many2one("res.partner", string="Buyer", readonly=True, copy=False)
     selling_price = fields.Float(readonly=True)
     salesperson_id = fields.Many2one(
         "res.users",
@@ -154,7 +154,7 @@ class EstateProperty(models.Model):
 
             accepted_offer.status = "sold"
             record.write({
-                "buyer": accepted_offer.partner_id.name,
+                "buyer": accepted_offer.partner_id.id,
                 "selling_price": accepted_offer.price,
                 "status": "sold",
             })
@@ -194,7 +194,7 @@ class EstateProperty(models.Model):
             accepted_offer = record.offer_ids.filtered(lambda offer: offer.status == "accept")[:1]
             if not accepted_offer and record.buyer and record.selling_price:
                 accepted_offer = record.offer_ids.filtered(
-                    lambda offer: offer.partner_id.name == record.buyer
+                    lambda offer: offer.partner_id == record.buyer
                     and float_compare(offer.price, record.selling_price, precision_digits=2) == 0
                 )[:1]
 
