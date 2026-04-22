@@ -120,7 +120,6 @@ class EstateProperty(models.Model):
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
 
-    # BUG if garden = false the other fields wont be set on zero
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -131,6 +130,10 @@ class EstateProperty(models.Model):
             else:
                 self.garden_area = 100
                 self.garden_orientation = "north"
+        else:
+            self.field_area = 0
+            self.garden_area = 0
+            self.garden_orientation = False
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):
