@@ -24,6 +24,7 @@
     'data': [
         'security/estate_security.xml',
         'security/ir.model.access.csv',
+        'data/estate_sequence.xml',
         'data/estate.property.type.csv',
         'data/estate.property.tag.csv',
         'data/estate_property.xml',

@@ -7,6 +7,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
+                <field name="ref" readonly="1"/>
                 <field name="status" widget="badge"
                        decoration-info="status == 'offer_recieved'"
                        decoration-warning="status == 'offer_accepted'"
@@ -77,15 +78,20 @@
                                    readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
                         </h1>
                         <group>
-                            <field name="property_tag_id"
-                                   widget="many2many_tags"
-                                   options="{'color_field': 'color','no_create': True, 'no_open': True}"
-                                   readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
-                            <field name="salesperson_id"
-                                   readonly="status in ('offer_accepted', 'sold', 'cancelled')"
-                                   domain="[('share', '=', False)]"
-                                   options="{'no_create': True, 'no_create_edit': True}"
-                                   context="{'form_view_ref': 'base.view_users_form'}"/>
+                            <group>
+                                <field name="property_tag_id"
+                                       widget="many2many_tags"
+                                       options="{'color_field': 'color','no_create': True, 'no_open': True}"
+                                       readonly="status in ('offer_accepted', 'sold', 'cancelled')"/>
+                            </group>
+                            <group>
+                                <field name="ref" readonly="1"/>
+                                <field name="salesperson_id"
+                                       readonly="status in ('offer_accepted', 'sold', 'cancelled')"
+                                       domain="[('share', '=', False)]"
+                                       options="{'no_create': True, 'no_create_edit': True}"
+                                       context="{'form_view_ref': 'base.view_users_form'}"/>
+                            </group>
                         </group>
                     </div>
                     <group string="Property Details">
@@ -177,6 +183,8 @@
                             />
                             <div class="mt-2">
                                 <field name="name" class="fw-bold fs-2"/>
+                                <br/>
+                                <strong>Ref: </strong><field name="ref" readonly="1"/>
                             </div>
                             <br/>
                             <div class="my-2">

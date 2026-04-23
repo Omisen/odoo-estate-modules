@@ -79,6 +79,13 @@ class EstateProperty(models.Model):
         store=True,
         readonly=True)
     property_type_category = fields.Selection(related="property_type_id.category", store=False)
+    ref = fields.Char(
+        string= "Reference",
+        required= True,
+        readonly= True,
+        copy = False,
+        default = "New"
+    )
     
     # ----- Constraints -----
     @api.constrains("garden_area", "garden")
@@ -244,3 +251,10 @@ class EstateProperty(models.Model):
                     f"Cannot modify property '{record.name}' because it is in '{record.status}' state."
                 )
         return super().write(vals)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("ref", "New") == "New":
+                vals["ref"] = self.env["ir.sequence"].next_by_code("estate.property") or "New"
+        return super().create(vals_list)
