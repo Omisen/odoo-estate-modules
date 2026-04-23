@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     # ----- Fields ------
     name = fields.Char(required=True)
@@ -37,7 +38,7 @@ class EstateProperty(models.Model):
         copy=False,
     )
     postcode = fields.Char()
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(required=True, tracking=True)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(
         compute="_computed_total_areas",
@@ -58,9 +59,15 @@ class EstateProperty(models.Model):
         ],
         default="new",
         readonly=True,
+        tracking=True,
     )
-    buyer = fields.Many2one("res.partner", string="Buyer", readonly=True, copy=False)
-    selling_price = fields.Float(readonly=True)
+    buyer = fields.Many2one(
+        "res.partner",
+        string="Buyer",
+        readonly=True,
+        copy=False,
+        tracking= True,)
+    selling_price = fields.Float(readonly=True, tracking=True)
     salesperson_id = fields.Many2one(
         "res.users",
         string="Salesperson",

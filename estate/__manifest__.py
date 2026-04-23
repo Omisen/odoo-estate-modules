@@ -10,7 +10,7 @@
     'author': 'Simone',
 
     # ------ Dependencies ------
-    'depends': ['base', 'web'],
+    'depends': ['base', 'web', 'mail'],
 
     # ----- Application ------
     'application': True,
