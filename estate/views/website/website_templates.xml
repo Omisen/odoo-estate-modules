@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <template id="website_home" name="Estate Home">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="text-center py-5">
+                    <h1 class="display-4 fw-bold mb-3">Find Your Property</h1>
+                    <p class="lead text-muted mb-4">Browse our latest listings and find the perfect place.</p>
+                    <a href="/properties" class="btn btn-primary btn-lg">
+                        <i class="fa fa-search me-2"/>Browse Properties
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
     <template id="website_property_list" name="Properties">
         <t t-call="website.layout">
             <div class="container py-5">

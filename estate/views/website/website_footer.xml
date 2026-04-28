@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="custom_footer" inherit_id="website.layout" name="Custom Footer">
+        <xpath expr="//div[hasclass('o_footer_copyright')]" position="replace">
+            <div class="o_footer_copyright o_colored_level o_cc text-center py-3">
+                <span>© 2026 My Estate Agency</span>
+            </div>
+        </xpath>
+    </template>
+</odoo>

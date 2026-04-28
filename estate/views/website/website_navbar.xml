@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="custom_navbar_brand" inherit_id="website.option_header_brand_logo" name="Estate Navbar Brand">
+        <xpath expr="//a[@data-name='Navbar Logo']" position="replace">
+            <a href="/" class="navbar-brand text-decoration-none">
+                <span class="fw-bold text-primary">My Estate</span>
+            </a>
+        </xpath>
+    </template>
+
+    <template id="custom_navbar_nav" inherit_id="website.navbar_nav" name="Estate Navbar Nav">
+        <xpath expr="//ul[@role='menu']" position="inside">
+            <li class="nav-item">
+                <a href="/properties" class="nav-link">Properties</a>
+            </li>
+        </xpath>
+    </template>
+</odoo>

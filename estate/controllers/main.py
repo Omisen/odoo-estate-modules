@@ -4,6 +4,10 @@ from odoo.http import request
 class EstateWebsite(http.Controller):
     
     # GET --- routs ---
+    @http.route('/', auth='public', website = True)
+    def home(self, **kwargs):
+        return request.render('estate.website_home')
+    
     @http.route('/properties', auth='public', website = True)
     def property_list(self, **kwargs):
         properties = request.env['estate.property'].sudo().search([

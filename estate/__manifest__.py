@@ -38,7 +38,9 @@
         'views/res_users_view.xml',
         'views/estate_menus.xml',
         # last order for websites views relative to the  frontend
-        'views/website/website_templates.xml'
+        'views/website/website_templates.xml',
+        'views/website/website_navbar.xml',
+        'views/website/website_footer.xml',
     ],
 
     # ----- Assets -----
