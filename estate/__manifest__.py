@@ -10,7 +10,7 @@
     'author': 'Simone',
 
     # ------ Dependencies ------
-    'depends': ['base', 'web', 'mail'],
+    'depends': ['base', 'web', 'mail', 'website'],
 
     # ----- Application ------
     'application': True,
@@ -37,6 +37,8 @@
         'views/estate_dashboard_action.xml',
         'views/res_users_view.xml',
         'views/estate_menus.xml',
+        # last order for websites views relative to the  frontend
+        'views/website/website_templates.xml'
     ],
 
     # ----- Assets -----

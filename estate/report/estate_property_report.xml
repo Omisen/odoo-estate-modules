@@ -169,6 +169,8 @@
         <field name="report_file">estate.report_property_estate_template</field>
         <field name="binding_model_id" ref="model_estate_property"/>
         <field name="binding_type">report</field>
+        <field name="attachment">'Property Report - '+(object.name or '')</field>
+        <field name="attachment_use">True</field>
     </record>
 
 </odoo>
