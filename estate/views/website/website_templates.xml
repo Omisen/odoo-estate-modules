@@ -2,15 +2,142 @@
 <odoo>
     <template id="website_home" name="Estate Home">
         <t t-call="website.layout">
-            <div class="container py-5">
-                <div class="text-center py-5">
+
+            <!-- Hero -->
+            <div class="bg-primary text-white py-5">
+                <div class="container py-4 text-center">
                     <h1 class="display-4 fw-bold mb-3">Find Your Property</h1>
-                    <p class="lead text-muted mb-4">Browse our latest listings and find the perfect place.</p>
-                    <a href="/properties" class="btn btn-primary btn-lg">
+                    <p class="lead mb-4 opacity-75">Browse our latest listings and find the perfect place to call home.</p>
+                    <a href="/properties" class="btn btn-light btn-lg fw-semibold">
                         <i class="fa fa-search me-2"/>Browse Properties
                     </a>
                 </div>
             </div>
+
+            <!-- Stats bar -->
+            <div class="bg-light border-bottom py-4">
+                <div class="container">
+                    <div class="row text-center g-3">
+                        <div class="col-6 col-md-3">
+                            <p class="fs-2 fw-bold text-primary mb-0">
+                                <t t-esc="total_available"/>
+                            </p>
+                            <p class="text-muted small mb-0">Available listings</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <p class="fs-2 fw-bold text-success mb-0">
+                                <t t-esc="total_sold"/>
+                            </p>
+                            <p class="text-muted small mb-0">Sold properties</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <p class="fs-2 fw-bold text-warning mb-0">
+                                <i class="fa fa-map-marker"/>
+                            </p>
+                            <p class="text-muted small mb-0">Multiple locations</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <p class="fs-2 fw-bold text-info mb-0">
+                                <i class="fa fa-shield"/>
+                            </p>
+                            <p class="text-muted small mb-0">Trusted agency</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container py-5">
+
+                <!-- Latest listings -->
+                <t t-if="latest_properties">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h2 class="mb-0">Latest Listings</h2>
+                        <a href="/properties" class="btn btn-outline-primary btn-sm">
+                            View all <i class="fa fa-arrow-right ms-1"/>
+                        </a>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-5">
+                        <t t-foreach="latest_properties" t-as="prop">
+                            <t t-set="status_class" t-value="'bg-info' if prop.status == 'new' else 'bg-primary' if prop.status == 'offer_recieved' else 'bg-warning text-dark' if prop.status == 'offer_accepted' else 'bg-success' if prop.status == 'sold' else 'bg-danger'"/>
+                            <div class="col">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h5 class="card-title mb-0 me-2">
+                                                <a t-attf-href="/properties/#{prop.id}" class="text-decoration-none text-dark stretched-link">
+                                                    <span t-field="prop.name"/>
+                                                </a>
+                                            </h5>
+                                            <span t-attf-class="badge #{status_class} text-nowrap">
+                                                <span t-field="prop.status"/>
+                                            </span>
+                                        </div>
+                                        <p class="text-muted small mb-3">
+                                            <i class="fa fa-tag me-1"/>Ref: <span t-field="prop.ref"/>
+                                            <t t-if="prop.postcode">
+                                                &#160;&#160;<i class="fa fa-map-marker me-1"/><span t-field="prop.postcode"/>
+                                            </t>
+                                        </p>
+                                        <div class="mt-auto pt-2 border-top">
+                                            <span class="fw-bold fs-5 text-success">
+                                                <span t-field="prop.expected_price" t-options='{"widget": "monetary", "display_currency": prop.env.company.currency_id}'/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+
+                <!-- Why choose us  -->
+                <div class="row g-4 py-3">
+                    <div class="col-12 mb-2">
+                        <h2 class="mb-0">Why Choose Us</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center py-4">
+                                <i class="fa fa-search fa-2x text-primary mb-3 d-block"/>
+                                <h5 class="fw-semibold">Easy Search</h5>
+                                <p class="text-muted small mb-0">Find properties that match your criteria with our simple listing browser.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center py-4">
+                                <i class="fa fa-check-circle fa-2x text-success mb-3 d-block"/>
+                                <h5 class="fw-semibold">Verified Listings</h5>
+                                <p class="text-muted small mb-0">All properties are reviewed and kept up to date by our team.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center py-4">
+                                <i class="fa fa-handshake-o fa-2x text-warning mb-3 d-block"/>
+                                <h5 class="fw-semibold">Expert Support</h5>
+                                <p class="text-muted small mb-0">Our agents guide you through every step, from viewing to closing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--  CTA banner  -->
+            <div class="bg-light border-top py-5 mt-3">
+                <div class="container text-center">
+                    <h3 class="fw-bold mb-2">Ready to find your next home?</h3>
+                    <p class="text-muted mb-4">Explore all available properties and request an offer today.</p>
+                    <a href="/properties" class="btn btn-primary btn-lg">
+                        <i class="fa fa-home me-2"/>See All Properties
+                    </a>
+                </div>
+            </div>
+
         </t>
     </template>
 

@@ -4,9 +4,20 @@ from odoo.http import request
 class EstateWebsite(http.Controller):
     
     # GET --- routs ---
-    @http.route('/', auth='public', website = True)
+    @http.route('/', auth='public', website=True)
     def home(self, **kwargs):
-        return request.render('estate.website_home')
+        Property = request.env['estate.property'].sudo()
+        latest_properties = Property.search(
+            [('status', 'not in', ['sold', 'cancelled'])],
+            order='id desc', limit=3
+        )
+        total_available = Property.search_count([('status', 'not in', ['sold', 'cancelled'])])
+        total_sold = Property.search_count([('status', '=', 'sold')])
+        return request.render('estate.website_home', {
+            'latest_properties': latest_properties,
+            'total_available': total_available,
+            'total_sold': total_sold,
+        })
     
     @http.route('/properties', auth='public', website = True)
     def property_list(self, **kwargs):
